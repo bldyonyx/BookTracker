@@ -1,16 +1,52 @@
-# React + Vite
+# Book Tracker ♡
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> keep your reads close.  
+> ₊˚⊹♡ a cozy little space for your books ♡⊹˚₊
 
-Currently, two official plugins are available:
+Book Tracker is a personal book tracking web app for
+organizing your library, keeping track of your reads,
+and creating collections of the books you love. (˶ᵔ ᵕ ᵔ˶)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✦ Planned features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+♡ Build and organize your personal library
 
-## Expanding the Oxlint configuration
+♡ Track books as À lire, En cours, Terminé, or Abandonné
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+♡ Search and discover books
+
+♡ Keep personal ratings and reviews
+
+♡ Create your own book collections
+
+♡ Set and follow a reading goal
+
+♡ Personalized reading preferences
+
+---
+
+## ✦ Made with
+
+`React` · `JavaScript` · `Tailwind CSS` · `Vite`
+
+---
+
+## ✦ Currently...
+
+Book Tracker is currently in the early stages of development! ૮ ˶ᵔ ᵕ ᵔ˶ ა
+
+I'm currently planning the experience, designing the interface,
+and building the foundations of the app.
+
+More features and cozy little details will be added as I
+continue learning and building the project ♡
+
+---
+
+<p align="center">
+  made with ♡ one book at a time
+  <br>
+  ᜊ ( ' - × ) ᜊ
+</p>
