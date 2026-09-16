@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --color-darkwood: #453228;
+  --color-walnut: #664839;
+  --color-parchment: #E5D4C4;
+
+  --color-sage: #909977;
+  --color-olive: #60674D;
+  --color-forest: #3F584D;
+
+  --color-caramel: #B58660;
+  --color-terracotta: #90524C;
+  --color-dustyrose: #CDADAC;
+
+  --color-ink: #2C3031;
+}
