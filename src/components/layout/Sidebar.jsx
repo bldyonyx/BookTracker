@@ -18,15 +18,14 @@ function Sidebar() {
             end={item.to === '/'}
             key={item.to}
             to={item.to}
-            className={({ isActive }) =>
-              [
-                'rounded-md px-3 py-2.5 text-xs font-bold transition-colors lg:px-4 lg:py-3 lg:text-sm',
-                'hover:bg-cream/10 hover:text-parchment',
-                isActive
-                  ? 'bg-lime text-ink shadow-sm'
-                  : 'text-cream',
-              ].join(' ')
-            }
+              className={({ isActive }) =>
+                [
+                  'rounded-md px-3 py-2.5 text-xs font-bold transition-all lg:px-4 lg:py-3 lg:text-sm',
+                  isActive
+                    ? 'bg-lime text-ink shadow-sm'
+                    : 'text-cream hover:translate-x-1 hover:text-lime',
+                ].join(' ')
+              }
           >
             {item.label}
           </NavLink>
