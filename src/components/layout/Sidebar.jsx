@@ -1,29 +1,22 @@
 import { NavLink } from 'react-router-dom'
-
-const navigationItems = [
-  { label: 'Accueil', to: '/' },
-  { label: 'Découvrir', to: '/discover' },
-  { label: 'Ma bibliothèque', to: '/library' },
-  { label: 'Collections', to: '/collections' },
-  { label: 'Paramètres', to: '/settings' },
-]
+import { desktopNavigationItems } from './navigation'
 
 function Sidebar() {
   return (
-    <aside className="flex min-h-screen w-64 shrink-0 flex-col border-r border-walnut/20 bg-parchment px-5 py-6 text-ink">
-      <div className="mb-10">
-        <p className="font-heading text-3xl font-bold text-darkwood">Book Tracker</p>
+    <aside className="hidden min-h-screen w-46 shrink-0 flex-col border-r border-walnut/20 bg-parchment px-3 py-5 text-ink md:flex lg:w-72 lg:px-5 lg:py-6">
+      <div className="mb-6 lg:mb-10">
+        <p className="font-heading text-2xl font-bold text-darkwood lg:text-3xl">Book Tracker</p>
       </div>
 
-      <nav aria-label="Navigation principale" className="flex flex-col gap-2 font-ui">
-        {navigationItems.map((item) => (
+      <nav aria-label="Navigation principale" className="flex flex-col gap-1.5 font-ui lg:gap-2">
+        {desktopNavigationItems.map((item) => (
           <NavLink
             end={item.to === '/'}
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
               [
-                'rounded-md px-4 py-3 text-sm font-bold transition-colors',
+                'rounded-md px-3 py-2.5 text-xs font-bold transition-colors lg:px-4 lg:py-3 lg:text-sm',
                 'hover:bg-sage/20 hover:text-forest',
                 isActive
                   ? 'bg-forest text-parchment shadow-sm'
