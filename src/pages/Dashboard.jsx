@@ -1,87 +1,13 @@
-import { useState } from 'react'
-
-import BookCard from '../components/books/BookCard'
-import Button from '../components/ui/Button'
-import Card from '../components/ui/Card'
-import Input from '../components/ui/Input'
-import Modal from '../components/ui/Modal'
-import Select from '../components/ui/Select'
-import StatusBadge from '../components/ui/StatusBadge'
-
 function Dashboard() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
   return (
     <div className="p-6">
-      <Card>
-        <h2 className="font-heading text-xl text-darkwood">
-          Test Card
-        </h2>
+      <h1 className="font-heading text-3xl font-bold text-darkwood">
+        Bonjour, Maya
+      </h1>
 
-        <p className="font-ui text-darkwood">
-          Ceci est une card de test.
-        </p>
-      </Card>
-
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Button>
-          Ajouter à ma bibliothèque
-        </Button>
-
-        <Button variant="secondary">
-          Voir la fiche
-        </Button>
-
-        <Button onClick={() => setIsModalOpen(true)}>
-          Ouvrir le modal
-        </Button>
-      </div>
-
-      <div className="mt-4 max-w-md">
-        <Input
-          id="test-search"
-          type="search"
-          placeholder="Rechercher un livre..."
-        />
-      </div>
-
-      <div className="mt-4 max-w-xs">
-        <Select
-          id="test-status"
-          label="Statut"
-          defaultValue="reading"
-        >
-          <option value="to-read">À lire</option>
-          <option value="reading">En cours</option>
-          <option value="finished">Terminé</option>
-          <option value="abandoned">Abandonné</option>
-        </Select>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          <StatusBadge status="to-read" />
-          <StatusBadge status="reading" />
-          <StatusBadge status="finished" />
-          <StatusBadge status="abandoned" />
-        </div>
-      </div>
-
-      <div className="mt-6 w-40">
-        <BookCard
-          title="The Hobbit"
-          author="J. R. R. Tolkien"
-          status="reading"
-        />
-      </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Ajouter à une collection"
-      >
-        <p className="font-ui text-sm text-darkwood">
-          Contenu du modal pour le moment.
-        </p>
-      </Modal>
+      <p className="mt-1 font-ui text-sm text-darkwood/60">
+        Voici un aperçu de tes lectures.
+      </p>
     </div>
   )
 }
