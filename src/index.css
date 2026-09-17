@@ -1,17 +1,90 @@
 @import "tailwindcss";
 
+
+/* Comfortaa */
+
+@font-face {
+  font-family: "Comfortaa";
+  src: url("./assets/fonts/comfortaa/Comfortaa-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Comfortaa";
+  src: url("./assets/fonts/comfortaa/Comfortaa-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Comfortaa";
+  src: url("./assets/fonts/comfortaa/Comfortaa-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+/* Frank Ruhl Libre */
+
+@font-face {
+  font-family: "Frank Ruhl Libre";
+  src: url("./assets/fonts/FrankRuhl/FrankRuhlLibre-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Frank Ruhl Libre";
+  src: url("./assets/fonts/FrankRuhl/FrankRuhlLibre-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Frank Ruhl Libre";
+  src: url("./assets/fonts/FrankRuhl/FrankRuhlLibre-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Frank Ruhl Libre";
+  src: url("./assets/fonts/FrankRuhl/FrankRuhlLibre-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Frank Ruhl Libre";
+  src: url("./assets/fonts/FrankRuhl/FrankRuhlLibre-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+
+/* Edu NSW ACT Foundation */
+
+@font-face {
+  font-family: "Edu NSW ACT Foundation";
+  src: url("./assets/fonts/EduNswActFondation/EduNSWACTFoundation-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
 @theme {
   --color-darkwood: #453228;
   --color-walnut: #664839;
   --color-parchment: #E5D4C4;
-
   --color-sage: #909977;
   --color-olive: #60674D;
   --color-forest: #3F584D;
-
   --color-caramel: #B58660;
   --color-terracotta: #90524C;
   --color-dustyrose: #CDADAC;
-
   --color-ink: #2C3031;
+
+  --font-heading: "Frank Ruhl Libre", serif;
+  --font-ui: "Comfortaa", sans-serif;
+  --font-handwritten: "Edu NSW ACT Foundation", cursive;
 }
