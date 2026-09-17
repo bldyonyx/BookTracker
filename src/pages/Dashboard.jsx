@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
+import Modal from '../components/ui/Modal'
 import Select from '../components/ui/Select'
 
 function Dashboard() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <div className="p-6">
       <Card>
@@ -24,28 +28,42 @@ function Dashboard() {
         <Button variant="secondary">
           Voir la fiche
         </Button>
+
+        <Button onClick={() => setIsModalOpen(true)}>
+          Ouvrir le modal
+        </Button>
       </div>
 
       <div className="mt-4 max-w-md">
         <Input
-        id="test-search"
-        type="search"
-        placeholder="Rechercher un livre..."
+          id="test-search"
+          type="search"
+          placeholder="Rechercher un livre..."
         />
       </div>
 
       <div className="mt-4 max-w-xs">
         <Select
-            id="test-status"
-            label="Statut"
-            defaultValue="reading"
+          id="test-status"
+          label="Statut"
+          defaultValue="reading"
         >
-            <option value="to-read">À lire</option>
-            <option value="reading">En cours</option>
-            <option value="finished">Terminé</option>
-            <option value="abandoned">Abandonné</option>
+          <option value="to-read">À lire</option>
+          <option value="reading">En cours</option>
+          <option value="finished">Terminé</option>
+          <option value="abandoned">Abandonné</option>
         </Select>
-        </div>
+      </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Ajouter à une collection"
+      >
+        <p className="font-ui text-sm text-darkwood">
+          Contenu du modal pour le moment.
+        </p>
+      </Modal>
     </div>
   )
 }
