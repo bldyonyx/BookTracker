@@ -4,6 +4,7 @@ import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
 import Modal from '../components/ui/Modal'
 import Select from '../components/ui/Select'
+import StatusBadge from '../components/ui/StatusBadge'
 
 function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -53,6 +54,13 @@ function Dashboard() {
           <option value="finished">Terminé</option>
           <option value="abandoned">Abandonné</option>
         </Select>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+            <StatusBadge status="to-read" />
+            <StatusBadge status="reading" />
+            <StatusBadge status="finished" />
+            <StatusBadge status="abandoned" />
+        </div>
       </div>
 
       <Modal
