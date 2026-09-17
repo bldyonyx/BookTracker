@@ -79,7 +79,7 @@
 
   /* Light surfaces */
   --color-parchment: #E5D4C4;
-  --color-cream: #F4EDDF;
+  --color-cream: #EEF3E4;
 
   /* Greens */
   --color-mintcream: #EEF3DA;
@@ -94,6 +94,8 @@
 
   /* Text */
   --color-ink: #2C3031;
+
+  /* Fonts */
   --font-heading: "Frank Ruhl Libre", serif;
   --font-ui: "Comfortaa", sans-serif;
   --font-handwritten: "Edu NSW ACT Foundation", cursive;

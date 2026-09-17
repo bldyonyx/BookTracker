@@ -1,10 +1,18 @@
+import Card from '../components/ui/Card'
+
 function Dashboard() {
   return (
-    <main className="font-handwritten min-h-screen bg-parchment flex items-center justify-center">
-      <h1 className="text-5xl font-bold text-forest">
-        Book Tracker ♡
-      </h1>
-    </main>
+    <div className="p-6">
+        <Card>
+        <h2 className="font-heading text-xl text-darkwood">
+            Test Card
+        </h2>
+
+        <p className="font-ui text-darkwood">
+            Ceci est une card de test.
+        </p>
+        </Card>
+    </div>
   )
 }
 
