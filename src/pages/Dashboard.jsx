@@ -1,5 +1,6 @@
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
+import Input from '../components/ui/Input'
 
 function Dashboard() {
   return (
@@ -22,6 +23,14 @@ function Dashboard() {
         <Button variant="secondary">
           Voir la fiche
         </Button>
+      </div>
+
+      <div className="mt-4 max-w-md">
+        <Input
+        id="test-search"
+        type="search"
+        placeholder="Rechercher un livre..."
+        />
       </div>
     </div>
   )
