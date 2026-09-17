@@ -73,17 +73,27 @@
 }
 
 @theme {
+  /* Browns */
   --color-darkwood: #453228;
   --color-walnut: #664839;
+
+  /* Light surfaces */
   --color-parchment: #E5D4C4;
+  --color-cream: #F4EDDF;
+
+  /* Greens */
+  --color-mintcream: #EEF3DA;
+  --color-lime: #DCEB86;
   --color-sage: #909977;
   --color-olive: #60674D;
   --color-forest: #3F584D;
-  --color-caramel: #B58660;
-  --color-terracotta: #90524C;
-  --color-dustyrose: #CDADAC;
-  --color-ink: #2C3031;
 
+  /* Accents */
+  --color-dustyrose: #CDADAC;
+  --color-softpink: #E9B8CA;
+
+  /* Text */
+  --color-ink: #2C3031;
   --font-heading: "Frank Ruhl Libre", serif;
   --font-ui: "Comfortaa", sans-serif;
   --font-handwritten: "Edu NSW ACT Foundation", cursive;
