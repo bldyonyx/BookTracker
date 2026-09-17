@@ -1,4 +1,6 @@
 import { useState } from 'react'
+
+import BookCard from '../components/books/BookCard'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
@@ -56,11 +58,19 @@ function Dashboard() {
         </Select>
 
         <div className="mt-4 flex flex-wrap gap-2">
-            <StatusBadge status="to-read" />
-            <StatusBadge status="reading" />
-            <StatusBadge status="finished" />
-            <StatusBadge status="abandoned" />
+          <StatusBadge status="to-read" />
+          <StatusBadge status="reading" />
+          <StatusBadge status="finished" />
+          <StatusBadge status="abandoned" />
         </div>
+      </div>
+
+      <div className="mt-6 w-40">
+        <BookCard
+          title="The Hobbit"
+          author="J. R. R. Tolkien"
+          status="reading"
+        />
       </div>
 
       <Modal

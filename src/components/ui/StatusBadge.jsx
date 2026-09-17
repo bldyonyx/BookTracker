@@ -1,22 +1,23 @@
 function StatusBadge({ status }) {
-    const statuses = {
+  const statuses = {
     'to-read': {
-        label: 'À lire',
-        className: 'bg-walnut/20 text-ink',
-        },
-        reading: {
-        label: 'En cours',
-        className: 'bg-lime text-ink',
-        },
-        finished: {
-        label: 'Terminé',
-        className: 'bg-sage text-mintcream',
-        },
-        abandoned: {
-        label: 'Abandonné',
-        className: 'bg-dustyrose text-ink',
-        },
-    }
+      label: 'À lire',
+      className: 'bg-walnut/20 text-ink',
+    },
+    reading: {
+      label: 'En cours',
+      className: 'bg-lime text-ink',
+    },
+    finished: {
+      label: 'Terminé',
+      className: 'bg-sage text-mintcream',
+    },
+    abandoned: {
+      label: 'Abandonné',
+      className: 'bg-dustyrose text-ink',
+    },
+  }
+
   const currentStatus = statuses[status]
 
   if (!currentStatus) {
