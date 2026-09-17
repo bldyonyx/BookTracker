@@ -1,6 +1,7 @@
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
+import Select from '../components/ui/Select'
 
 function Dashboard() {
   return (
@@ -32,6 +33,19 @@ function Dashboard() {
         placeholder="Rechercher un livre..."
         />
       </div>
+
+      <div className="mt-4 max-w-xs">
+        <Select
+            id="test-status"
+            label="Statut"
+            defaultValue="reading"
+        >
+            <option value="to-read">À lire</option>
+            <option value="reading">En cours</option>
+            <option value="finished">Terminé</option>
+            <option value="abandoned">Abandonné</option>
+        </Select>
+        </div>
     </div>
   )
 }

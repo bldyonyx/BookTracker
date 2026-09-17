@@ -100,3 +100,16 @@
   --font-ui: "Comfortaa", sans-serif;
   --font-handwritten: "Edu NSW ACT Foundation", cursive;
 }
+
+.app-background {
+  background-color: var(--color-mintcream);
+}
+
+@media (min-width: 1024px) {
+  .app-background {
+    background-image: var(--app-stripes);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
