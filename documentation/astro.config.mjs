@@ -5,7 +5,7 @@ import starlight from '@astrojs/starlight'
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'Book Tracker',
+      title: 'Dear Pages',
 
 	  locales: {
 		root: {
@@ -62,17 +62,21 @@ export default defineConfig({
           label: 'API & données',
           items: [
             {
-              label: 'Google Books API',
+              label: 'Sources de livres',
               slug: 'data/google-books',
             },
-            {
-              label: 'Modèle de données',
-              slug: 'data/modele',
-            },
-            {
-              label: 'Firebase',
-              slug: 'data/firebase',
-            },
+          {
+            label: 'Modèle de données',
+            slug: 'data/modele',
+          },
+          {
+            label: 'Recommandations',
+            slug: 'data/recommendations',
+          },
+          {
+            label: 'Firebase',
+            slug: 'data/firebase',
+          },
           ],
         },
         {

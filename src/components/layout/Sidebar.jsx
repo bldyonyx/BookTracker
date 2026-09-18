@@ -22,7 +22,7 @@ function Sidebar() {
           to="/"
           className="font-heading text-2xl font-bold text-cream lg:text-3xl"
         >
-          Book Tracker
+          Dear Pages
         </NavLink>
       </div>
 

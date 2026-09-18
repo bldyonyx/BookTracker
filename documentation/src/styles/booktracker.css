@@ -1,5 +1,5 @@
 /* =========================================================
-   BOOK TRACKER — STARLIGHT DOCUMENTATION THEME
+   DEAR PAGES — STARLIGHT DOCUMENTATION THEME
    ========================================================= */
 
 
@@ -57,7 +57,7 @@
 
 
 /* ---------------------------------------------------------
-   BOOK TRACKER PALETTE
+   DEAR PAGES PALETTE
    --------------------------------------------------------- */
 
 :root,
@@ -396,7 +396,7 @@ site-search button svg line {
 /*
  * Starlight affiche un menu déroulant "On this page"
  * sur les écrans où le sommaire desktop ne tient plus.
- * Book Tracker ne l'utilise pas.
+ * Dear Pages ne l'utilise pas.
  */
 mobile-starlight-toc {
   display: none !important;
@@ -575,7 +575,7 @@ mobile-starlight-toc {
     border-bottom: 1px solid rgba(229, 212, 196, 0.18);
   }
 
-  /* Book Tracker title */
+  /* Dear Pages title */
   header.header .site-title {
     font-size: 1.35rem;
     white-space: nowrap;

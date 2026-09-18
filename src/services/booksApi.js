@@ -8,7 +8,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY
  * pour l'utiliser plus facilement dans l'application.
  *
  * @param {Object} item - Livre retourne par Google Books.
- * @returns {Object} Livre formate pour Book Tracker.
+ * @returns {Object} Livre formate pour Dear Pages.
  */
 function formatBook(item) {
   const volumeInfo = item.volumeInfo
@@ -96,7 +96,7 @@ export async function getBookSuggestions(query) {
  * @param {string} subject - Categorie de livres a rechercher.
  * @param {number} [maxResults=10] - Nombre maximum de livres a recuperer.
  * @param {number} [startIndex=0] - Position du premier resultat Google Books.
- * @returns {Promise<Array>} Liste de livres formates pour Book Tracker.
+ * @returns {Promise<Array>} Liste de livres formates pour Dear Pages.
  * @throws {Error} Si la requete vers Google Books echoue.
  */
 export async function getBooksBySubject(

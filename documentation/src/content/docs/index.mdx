@@ -1,0 +1,60 @@
+---
+title: Dear Pages
+description: Documentation du projet Dear Pages.
+template: splash
+hero:
+  title: Dear Pages
+  tagline: your personal reading journal ♡
+  actions:
+    - text: Découvrir le projet
+      link: /introduction/fonctionnalites/
+      icon: right-arrow
+    - text: Voir l'architecture
+      link: /architecture/structure/
+      variant: minimal
+      icon: open-book
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+## Documentation
+
+Cette documentation présente la conception et le développement de **Dear Pages**, une application web personnelle dédiée au suivi des lectures.
+
+<CardGrid>
+  <Card title="Architecture" icon="seti:folder">
+    Découvre l'organisation du projet, le routing et la structure des composants.
+  </Card>
+
+  <Card title="API & données" icon="seti:database">
+    Comprends comment Dear Pages utilise Google Books, Open Library et les recommandations temporaires avant l'arrivée de Firebase.
+  </Card>
+
+  <Card title="Développement" icon="seti:code">
+    Retrouve l'installation du projet, les variables d'environnement, les scripts et la documentation JSDoc.
+  </Card>
+
+  <Card title="Projet" icon="seti:config">
+    Consulte les choix techniques, la stratégie responsive et l'évolution prévue de l'application.
+  </Card>
+</CardGrid>
+
+## Stack technique
+
+Dear Pages est actuellement construit avec :
+
+- **React** pour l'interface utilisateur
+- **JavaScript** pour la logique de l'application
+- **Tailwind CSS** pour les styles et le responsive
+- **Vite** pour l'environnement de développement
+- **Google Books API** pour rechercher et récupérer les informations des livres
+- **Open Library** pour les tendances de lecture
+- **Firebase** prévu pour l'authentification et les données personnelles de l'utilisateur
+- **JSDoc** pour documenter les fonctions et services importants
+- **Astro + Starlight** pour cette documentation
+
+## État du projet
+
+Dear Pages est actuellement en cours de développement.
+
+Les fonctionnalités principales sont construites progressivement, et cette documentation évoluera en même temps que l'application.

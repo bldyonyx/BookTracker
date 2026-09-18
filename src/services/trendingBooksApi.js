@@ -10,7 +10,7 @@ const OPEN_LIBRARY_COVERS_URL = 'https://covers.openlibrary.org/b/id'
  * a l'affichage du rayon "Tendances du moment", y compris les couvertures.
  *
  * @param {number} [limit=10] - Nombre maximum de livres a retourner.
- * @returns {Promise<Array>} Livres tendance formates pour Book Tracker.
+ * @returns {Promise<Array>} Livres tendance formates pour Dear Pages.
  * @throws {Error} Si la requete Open Library echoue.
  */
 export async function getTrendingBooksDetails(limit = 10) {

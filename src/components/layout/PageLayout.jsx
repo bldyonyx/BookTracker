@@ -40,7 +40,7 @@ function PageLayout() {
           to="/"
           className="min-w-0 truncate font-heading text-xl font-bold text-cream"
         >
-          Book Tracker
+          Dear Pages
         </NavLink>
 
         <NavLink
