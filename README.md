@@ -1,21 +1,37 @@
-# Book Tracker ♡
+# Dear Pages ♡
 
 > keep your reads close.  
 > ₊˚⊹♡ a cozy little space for your books ♡⊹˚₊
 
-Book Tracker is a personal book tracking web app for
-organizing your library, keeping track of your reads,
-and creating collections of the books you love. (˶ᵔ ᵕ ᵔ˶)
+Dear Pages is a cozy book tracking web app for
+organizing your library, discovering new books,
+tracking your reads, and keeping your favorite stories close. (˶ᵔ ᵕ ᵔ˶)
 
 ---
 
-## ✦ Planned features
+## ✦ Features
+
+♡ Search for books by title, author, or keyword
+
+♡ Get search suggestions while typing
+
+♡ Discover personalized book recommendations
+
+♡ Browse trending books and timeless classics
+
+♡ Refresh recommendations to discover something new
+
+♡ Explore a responsive interface across desktop, tablet, and mobile
+
+---
+
+## ✦ Coming next
 
 ♡ Build and organize your personal library
 
 ♡ Track books as À lire, En cours, Terminé, or Abandonné
 
-♡ Search and discover books
+♡ Open detailed pages for each book
 
 ♡ Keep personal ratings and reviews
 
@@ -23,7 +39,7 @@ and creating collections of the books you love. (˶ᵔ ᵕ ᵔ˶)
 
 ♡ Set and follow a reading goal
 
-♡ Personalized reading preferences
+♡ Personalize recommendations based on your reading preferences
 
 ---
 
@@ -31,16 +47,23 @@ and creating collections of the books you love. (˶ᵔ ᵕ ᵔ˶)
 
 `React` · `JavaScript` · `Tailwind CSS` · `Vite`
 
+`React Router` · `Google Books API` · `Open Library API`
+
 ---
 
 ## ✦ Currently...
 
-Book Tracker is currently in the early stages of development! ૮ ˶ᵔ ᵕ ᵔ˶ ა
+Dear Pages is currently a work in progress! ૮ ˶ᵔ ᵕ ᵔ˶ ა
 
-I'm currently planning the experience, designing the interface,
-and building the foundations of the app.
+The main interface and responsive layout are in place,
+and the Discover experience is now connected to real book data
+with search, suggestions, recommendations, trends, and classics.
 
-More features and cozy little details will be added as I
+I'm currently working on the core features that will make
+Dear Pages a complete book tracking experience — authentication,
+your library, reading progress, collections, ratings, and reviews.
+
+More features and cozy little details are coming as I
 continue learning and building the project ♡
 
 ---
