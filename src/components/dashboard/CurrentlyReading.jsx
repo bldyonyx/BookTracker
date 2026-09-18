@@ -42,9 +42,9 @@ function CurrentlyReading() {
     (book) => book.status === 'reading'
   )
 
-  const currentBook = readingBooks.find(
-    (book) => book.id === selectedBookId
-  ) || readingBooks[0]
+  const currentBook =
+    readingBooks.find((book) => book.id === selectedBookId) ||
+    readingBooks[0]
 
   function handleStatusChange(newStatus) {
     if (!currentBook) return
@@ -91,9 +91,9 @@ function CurrentlyReading() {
         </p>
       </div>
 
-      <div className="mt-6 grid items-center gap-8 md:grid-cols-[auto_1fr]">
+      <div className="mt-6 grid items-center gap-8 sm:grid-cols-2">
         {/* Stack de couvertures */}
-        <div className="flex items-center pl-8 pr-4">
+        <div className="flex items-center justify-center px-4">
           {readingBooks.map((book, index) => {
             const isSelected = book.id === currentBook.id
 
@@ -137,7 +137,7 @@ function CurrentlyReading() {
         </div>
 
         {/* Informations du livre sélectionné */}
-        <div className="flex min-h-52 min-w-0 flex-col justify-center">
+        <div className="flex min-w-0 flex-col justify-center sm:min-h-52">
           <div>
             <StatusBadge status={currentBook.status} />
           </div>
