@@ -13,6 +13,7 @@ function formatBook(item) {
 
   return {
     id: item.id,
+    googleBooksId: item.id,
     title: volumeInfo.title || 'Titre inconnu',
     authors: volumeInfo.authors || ['Auteur inconnu'],
 
@@ -40,7 +41,7 @@ function formatBook(item) {
  */
 export async function searchBooks(query) {
   const response = await fetch(
-    `${BASE_URL}?q=${encodeURIComponent(query)}&langRestrict=fr&key=${API_KEY}`
+    `${BASE_URL}?q=${encodeURIComponent(query)}&langRestrict=fr&maxResults=20&key=${API_KEY}`
   )
 
   if (!response.ok) {
@@ -80,7 +81,6 @@ export async function getBookSuggestions(query) {
   return data.items?.map(formatBook) || []
 }
 
-
 /**
  * Récupère des livres appartenant à une catégorie Google Books.
  *
@@ -98,7 +98,9 @@ export async function getBooksBySubject(subject, maxResults = 10) {
   )
 
   if (!response.ok) {
-    throw new Error('Impossible de récupérer cette sélection de livres.')
+    throw new Error(
+      'Impossible de récupérer cette sélection de livres.'
+    )
   }
 
   const data = await response.json()

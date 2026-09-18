@@ -7,11 +7,21 @@ function DiscoverSearch({
   onSearchChange,
   onSubmit,
   onClear,
+  submittedQuery,
   suggestions,
   isSuggestionsLoading,
 }) {
   const searchRef = useRef(null)
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
+  const trimmedSearch = search.trim()
+  const trimmedSubmittedQuery = submittedQuery.trim()
+  const isTypingNewQuery =
+    trimmedSearch.length >= 2 &&
+    trimmedSearch !== trimmedSubmittedQuery
+  const hasSuggestionsPanel =
+    suggestions.length > 0 || isSuggestionsLoading
+  const shouldShowSuggestions =
+    isSuggestionsOpen && isTypingNewQuery && hasSuggestionsPanel
 
   /*
    * Ferme les suggestions lorsque l'utilisateur
@@ -34,18 +44,8 @@ function DiscoverSearch({
     }
   }, [])
 
-  /*
-   * Ouvre les suggestions lorsqu'elles arrivent
-   * pendant que l'utilisateur écrit.
-   */
-  useEffect(() => {
-    if (suggestions.length > 0 || isSuggestionsLoading) {
-      setIsSuggestionsOpen(true)
-    }
-  }, [suggestions, isSuggestionsLoading])
-
   function handleFocus() {
-    if (search.trim().length >= 2) {
+    if (isTypingNewQuery) {
       setIsSuggestionsOpen(true)
     }
   }
@@ -60,10 +60,15 @@ function DiscoverSearch({
     onClear()
   }
 
+  function handleSubmit(event) {
+    setIsSuggestionsOpen(false)
+    onSubmit(event)
+  }
+
   return (
     <form
       ref={searchRef}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       className="
         relative w-full min-w-0
         max-w-[calc(100vw-3rem)]
@@ -130,7 +135,7 @@ function DiscoverSearch({
         )}
       </div>
 
-      {isSuggestionsOpen && (
+      {shouldShowSuggestions && (
         <SearchSuggestions
           suggestions={suggestions}
           isLoading={isSuggestionsLoading}

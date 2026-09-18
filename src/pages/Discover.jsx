@@ -150,6 +150,7 @@ function Discover() {
    * de récupérer les suggestions.
    */
   useEffect(() => {
+    let isActive = true
     const trimmedSearch = search.trim()
 
     if (
@@ -167,15 +168,24 @@ function Discover() {
       try {
         const results = await getBookSuggestions(trimmedSearch)
 
-        setSuggestions(results)
+        if (isActive) {
+          setSuggestions(results)
+        }
       } catch {
-        setSuggestions([])
+        if (isActive) {
+          setSuggestions([])
+        }
       } finally {
-        setAreSuggestionsLoading(false)
+        if (isActive) {
+          setAreSuggestionsLoading(false)
+        }
       }
     }, 300)
 
-    return () => clearTimeout(timeout)
+    return () => {
+      isActive = false
+      clearTimeout(timeout)
+    }
   }, [search, queryFromUrl])
 
   function handleSubmit(event) {
@@ -186,6 +196,7 @@ function Discover() {
     if (!trimmedSearch) return
 
     setSuggestions([])
+    setAreSuggestionsLoading(false)
     setSearchParams({ q: trimmedSearch })
   }
 
@@ -217,12 +228,13 @@ function Discover() {
       </header>
 
       {/* Recherche */}
-      <section className="mt-8">
+      <section className={isSearchMode ? 'mt-6' : 'mt-8'}>
         <DiscoverSearch
           search={search}
           onSearchChange={setSearch}
           onSubmit={handleSubmit}
           onClear={handleClearSearch}
+          submittedQuery={queryFromUrl}
           suggestions={suggestions}
           isSuggestionsLoading={areSuggestionsLoading}
         />
@@ -268,7 +280,7 @@ function Discover() {
 
       {/* Mode recherche */}
       {isSearchMode && (
-        <section className="mt-10">
+        <section className="mt-6">
           <button
             type="button"
             onClick={handleBackToDiscover}
@@ -298,13 +310,7 @@ function Discover() {
           {!isLoading && !error && (
             <>
               {/* Header des résultats */}
-              <div
-                className="
-                  mt-8
-                  flex flex-col gap-4
-                  md:flex-row md:items-end md:justify-between
-                "
-              >
+              <div className="mt-5">
                 <div>
                   <h2 className="font-heading text-2xl font-bold text-darkwood">
                     Résultats pour « {queryFromUrl} »
@@ -316,46 +322,31 @@ function Discover() {
                     {books.length > 1 ? 's' : ''}
                   </p>
                 </div>
-
-                <button
-                  type="button"
-                  className="
-                    w-fit cursor-pointer
-                    rounded-full
-                    border border-walnut/20
-                    bg-cream
-                    px-5 py-2.5
-                    font-ui text-sm font-bold
-                    text-darkwood
-                    transition-colors
-                    hover:bg-mintcream
-                  "
-                >
-                  Filtrer
-                </button>
               </div>
 
               {/* Livres trouvés */}
               {books.length > 0 && (
                 <div
                   className="
-                    mt-8 grid
+                    mt-6 grid
                     grid-cols-2
-                    gap-x-5 gap-y-8
-                    sm:grid-cols-3
-                    lg:grid-cols-4
-                    xl:grid-cols-5
-                    2xl:grid-cols-6
+                    justify-items-center
+                    gap-x-4 gap-y-7
+                    sm:grid-cols-[repeat(auto-fit,minmax(9rem,10rem))]
+                    sm:justify-start
+                    sm:justify-items-start
+                    sm:gap-x-5
                   "
                 >
                   {books.map((book) => (
-                    <BookCard
-                      key={book.id}
-                      bookId={book.id}
-                      title={book.title}
-                      author={book.authors.join(', ')}
-                      cover={book.cover}
-                    />
+                    <div key={book.id} className="w-full max-w-40">
+                      <BookCard
+                        bookId={book.id}
+                        title={book.title}
+                        author={book.authors.join(', ')}
+                        cover={book.cover}
+                      />
+                    </div>
                   ))}
                 </div>
               )}
@@ -364,7 +355,7 @@ function Discover() {
               {books.length === 0 && (
                 <div
                   className="
-                    mt-8 rounded-2xl
+                    mt-6 rounded-2xl
                     border border-walnut/10
                     bg-cream/70
                     px-6 py-10
