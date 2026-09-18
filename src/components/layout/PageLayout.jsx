@@ -80,7 +80,7 @@ function PageLayout() {
             w-full
             min-w-0
             bg-mintcream
-            bg-[length:100%_auto]
+            bg-size-[100%_auto]
             bg-top
             bg-repeat-y
             pb-19

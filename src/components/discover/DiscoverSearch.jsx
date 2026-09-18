@@ -106,7 +106,7 @@ function DiscoverSearch({
           autoComplete="off"
           className="
             w-full
-            !rounded-full
+            rounded-full!
             py-3 pl-13 pr-12
           "
         />

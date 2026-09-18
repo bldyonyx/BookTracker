@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import BookCard from '../components/books/BookCard'
+import DiscoverHome from '../components/discover/DiscoverHome'
 import DiscoverSearch from '../components/discover/DiscoverSearch'
-import DiscoverShelf from '../components/discover/DiscoverShelf'
-import ForYouSection from '../components/discover/ForYouSection'
-import {
-  getBookSuggestions,
-  getBooksBySubject,
-  searchBooks,
-} from '../services/booksApi'
-import { getTrendingBooksDetails } from '../services/trendingBooksApi'
+import SearchResults from '../components/discover/SearchResults'
+import useDiscoverHomeBooks from '../hooks/useDiscoverHomeBooks'
+import useDiscoverSearch from '../hooks/useDiscoverSearch'
 
 const TEMPORARY_PREFERENCES = [
   'Fantasy',
@@ -23,196 +17,26 @@ function Discover() {
   const queryFromUrl = searchParams.get('q') || ''
   const isSearchMode = Boolean(queryFromUrl)
 
-  const [search, setSearch] = useState(queryFromUrl)
+  const {
+    search,
+    setSearch,
+    books,
+    suggestions,
+    isLoading,
+    areSuggestionsLoading,
+    error,
+    handleSubmit,
+    handleClearSearch,
+    handleBackToDiscover,
+  } = useDiscoverSearch(queryFromUrl, setSearchParams)
 
-  // Recherche
-  const [books, setBooks] = useState([])
-  const [suggestions, setSuggestions] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [areSuggestionsLoading, setAreSuggestionsLoading] =
-    useState(false)
-  const [error, setError] = useState('')
-
-  // Découverte
-  const [forYouBooks, setForYouBooks] = useState([])
-  const [trendingBooks, setTrendingBooks] = useState([])
-  const [mustReadBooks, setMustReadBooks] = useState([])
-  const [isDiscoverLoading, setIsDiscoverLoading] =
-    useState(false)
-  const [discoverError, setDiscoverError] = useState('')
-
-  /*
-   * Garde l'input synchronisé avec la recherche
-   * présente dans l'URL.
-   */
-  useEffect(() => {
-    setSearch(queryFromUrl)
-  }, [queryFromUrl])
-
-  /*
-   * Charge indépendamment les différentes sélections
-   * de la page Découvrir.
-   *
-   * Promise.allSettled permet aux autres sections de rester
-   * disponibles si une API ou une requête échoue.
-   *
-   * Les préférences sont temporaires jusqu'à la mise
-   * en place de Firebase et de l'onboarding.
-   */
-  useEffect(() => {
-    if (isSearchMode) return
-
-    async function loadDiscoverBooks() {
-      setIsDiscoverLoading(true)
-      setDiscoverError('')
-
-      const results = await Promise.allSettled([
-        getBooksBySubject('mystery', 5),
-        getTrendingBooksDetails(10),
-        getBooksBySubject('classics', 10),
-      ])
-
-      const [
-        forYouResult,
-        trendingResult,
-        mustReadsResult,
-      ] = results
-
-      // Peut-être pour toi
-      if (forYouResult.status === 'fulfilled') {
-        setForYouBooks(forYouResult.value)
-      } else {
-        setForYouBooks([])
-      }
-
-      // Tendances du moment
-      if (trendingResult.status === 'fulfilled') {
-        setTrendingBooks(trendingResult.value)
-      } else {
-        setTrendingBooks([])
-      }
-
-      // Les incontournables
-      if (mustReadsResult.status === 'fulfilled') {
-        setMustReadBooks(mustReadsResult.value)
-      } else {
-        setMustReadBooks([])
-      }
-
-      const hasFailedRequest = results.some(
-        (result) => result.status === 'rejected'
-      )
-
-      if (hasFailedRequest) {
-        setDiscoverError(
-          'Certaines sélections sont temporairement indisponibles.'
-        )
-      }
-
-      setIsDiscoverLoading(false)
-    }
-
-    loadDiscoverBooks()
-  }, [isSearchMode])
-
-  /*
-   * Lance la recherche principale lorsque ?q=
-   * est présent dans l'URL.
-   */
-  useEffect(() => {
-    if (!queryFromUrl) {
-      setBooks([])
-      setError('')
-      return
-    }
-
-    async function loadBooks() {
-      try {
-        setIsLoading(true)
-        setError('')
-
-        const results = await searchBooks(queryFromUrl)
-
-        setBooks(results)
-      } catch (err) {
-        setError(err.message)
-        setBooks([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadBooks()
-  }, [queryFromUrl])
-
-  /*
-   * Attend 300 ms après la saisie avant
-   * de récupérer les suggestions.
-   */
-  useEffect(() => {
-    let isActive = true
-    const trimmedSearch = search.trim()
-
-    if (
-      trimmedSearch.length < 2 ||
-      trimmedSearch === queryFromUrl
-    ) {
-      setSuggestions([])
-      setAreSuggestionsLoading(false)
-      return
-    }
-
-    setAreSuggestionsLoading(true)
-
-    const timeout = setTimeout(async () => {
-      try {
-        const results = await getBookSuggestions(trimmedSearch)
-
-        if (isActive) {
-          setSuggestions(results)
-        }
-      } catch {
-        if (isActive) {
-          setSuggestions([])
-        }
-      } finally {
-        if (isActive) {
-          setAreSuggestionsLoading(false)
-        }
-      }
-    }, 300)
-
-    return () => {
-      isActive = false
-      clearTimeout(timeout)
-    }
-  }, [search, queryFromUrl])
-
-  function handleSubmit(event) {
-    event.preventDefault()
-
-    const trimmedSearch = search.trim()
-
-    if (!trimmedSearch) return
-
-    setSuggestions([])
-    setAreSuggestionsLoading(false)
-    setSearchParams({ q: trimmedSearch })
-  }
-
-  function handleClearSearch() {
-    setSearch('')
-    setSuggestions([])
-    setAreSuggestionsLoading(false)
-    setSearchParams({})
-  }
-
-  function handleBackToDiscover() {
-    setSearch('')
-    setSuggestions([])
-    setAreSuggestionsLoading(false)
-    setSearchParams({})
-  }
+  const {
+    forYouBooks,
+    trendingBooks,
+    mustReadBooks,
+    isDiscoverLoading,
+    discoverError,
+  } = useDiscoverHomeBooks(isSearchMode)
 
   return (
     <div className="p-6">
@@ -242,138 +66,25 @@ function Discover() {
 
       {/* Mode découverte */}
       {!isSearchMode && (
-        <div className="mt-10 space-y-12">
-          {isDiscoverLoading && (
-            <p className="max-w-[calc(100vw-3rem)] break-words font-ui text-sm text-darkwood/60 md:max-w-full">
-              Préparation de tes découvertes...
-            </p>
-          )}
-
-          {!isDiscoverLoading && discoverError && (
-            <p className="max-w-[calc(100vw-3rem)] break-words font-ui text-sm text-darkwood/60 md:max-w-full">
-              {discoverError}
-            </p>
-          )}
-
-          {!isDiscoverLoading && (
-            <>
-              <ForYouSection
-                books={forYouBooks}
-                preferences={TEMPORARY_PREFERENCES}
-              />
-
-              <DiscoverShelf
-                title="Tendances du moment"
-                description="Les livres qui attirent l'attention en ce moment."
-                books={trendingBooks}
-              />
-
-              <DiscoverShelf
-                title="Les incontournables"
-                description="Des histoires intemporelles à découvrir."
-                books={mustReadBooks}
-              />
-            </>
-          )}
-        </div>
+        <DiscoverHome
+          forYouBooks={forYouBooks}
+          trendingBooks={trendingBooks}
+          mustReadBooks={mustReadBooks}
+          preferences={TEMPORARY_PREFERENCES}
+          isLoading={isDiscoverLoading}
+          error={discoverError}
+        />
       )}
 
       {/* Mode recherche */}
       {isSearchMode && (
-        <section className="mt-6">
-          <button
-            type="button"
-            onClick={handleBackToDiscover}
-            className="
-              cursor-pointer
-              font-ui text-sm font-bold
-              text-darkwood/60
-              transition-colors
-              hover:text-darkwood
-            "
-          >
-            ← Retour aux découvertes
-          </button>
-
-          {isLoading && (
-            <p className="mt-8 font-ui text-sm text-darkwood/60">
-              Recherche en cours...
-            </p>
-          )}
-
-          {error && (
-            <p className="mt-8 font-ui text-sm text-darkwood">
-              {error}
-            </p>
-          )}
-
-          {!isLoading && !error && (
-            <>
-              {/* Header des résultats */}
-              <div className="mt-5">
-                <div>
-                  <h2 className="font-heading text-2xl font-bold text-darkwood">
-                    Résultats pour « {queryFromUrl} »
-                  </h2>
-
-                  <p className="mt-1 font-ui text-sm text-darkwood/60">
-                    {books.length} livre
-                    {books.length > 1 ? 's' : ''} trouvé
-                    {books.length > 1 ? 's' : ''}
-                  </p>
-                </div>
-              </div>
-
-              {/* Livres trouvés */}
-              {books.length > 0 && (
-                <div
-                  className="
-                    mt-6 grid
-                    grid-cols-2
-                    justify-items-center
-                    gap-x-4 gap-y-7
-                    sm:grid-cols-[repeat(auto-fit,minmax(9rem,10rem))]
-                    sm:justify-start
-                    sm:justify-items-start
-                    sm:gap-x-5
-                  "
-                >
-                  {books.map((book) => (
-                    <div key={book.id} className="w-full max-w-40">
-                      <BookCard
-                        bookId={book.id}
-                        title={book.title}
-                        author={book.authors.join(', ')}
-                        cover={book.cover}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Aucun résultat */}
-              {books.length === 0 && (
-                <div
-                  className="
-                    mt-6 rounded-2xl
-                    border border-walnut/10
-                    bg-cream/70
-                    px-6 py-10
-                    text-center
-                  "
-                >
-                  <p className="font-heading text-xl font-bold text-darkwood">
-                    Aucun livre trouvé
-                  </p>
-
-                  <p className="mt-2 font-ui text-sm text-darkwood/60">
-                    Essaie avec un autre titre, auteur ou mot-clé.
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </section>
+        <SearchResults
+          query={queryFromUrl}
+          books={books}
+          isLoading={isLoading}
+          error={error}
+          onBackToDiscover={handleBackToDiscover}
+        />
       )}
     </div>
   )
