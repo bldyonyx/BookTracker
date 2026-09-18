@@ -74,8 +74,8 @@ function ForYouSection({
         </div>
 
         {/* Action principale */}
-        <button
-          type="button"
+        <Link
+          to="/discover?view=for-you"
           className="
             w-fit shrink-0 cursor-pointer
             font-ui text-xs font-bold
@@ -91,7 +91,7 @@ function ForYouSection({
           "
         >
           Voir toutes les suggestions →
-        </button>
+        </Link>
       </div>
 
       {/* Livres recommandés */}

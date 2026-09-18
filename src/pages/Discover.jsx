@@ -1,21 +1,20 @@
 import { useSearchParams } from 'react-router-dom'
 import DiscoverHome from '../components/discover/DiscoverHome'
 import DiscoverSearch from '../components/discover/DiscoverSearch'
+import ForYouRecommendations from '../components/discover/ForYouRecommendations'
 import SearchResults from '../components/discover/SearchResults'
+import HeaderActions from '../components/layout/HeaderActions'
+import { TEMPORARY_DISCOVER_PREFERENCE_LABELS } from '../constants/discoverPreferences'
 import useDiscoverHomeBooks from '../hooks/useDiscoverHomeBooks'
 import useDiscoverSearch from '../hooks/useDiscoverSearch'
-
-const TEMPORARY_PREFERENCES = [
-  'Fantasy',
-  'Mystère',
-  'Classiques',
-]
 
 function Discover() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const queryFromUrl = searchParams.get('q') || ''
   const isSearchMode = Boolean(queryFromUrl)
+  const isForYouMode =
+    searchParams.get('view') === 'for-you' && !isSearchMode
 
   const {
     search,
@@ -36,19 +35,30 @@ function Discover() {
     mustReadBooks,
     isDiscoverLoading,
     discoverError,
-  } = useDiscoverHomeBooks(isSearchMode)
+  } = useDiscoverHomeBooks(isSearchMode || isForYouMode)
 
   return (
     <div className="p-6">
       {/* Header */}
       <header className="py-4">
-        <h1 className="font-heading text-3xl font-bold text-darkwood md:text-4xl">
-          Découvrir
-        </h1>
+        <div
+          className="
+            flex flex-col gap-4
+            md:flex-row md:items-center md:justify-between
+          "
+        >
+          <div className="min-w-0">
+            <h1 className="font-heading text-3xl font-bold text-darkwood md:text-4xl">
+              Découvrir
+            </h1>
 
-        <p className="mt-2 font-ui text-sm font-semibold text-darkwood/60 md:text-base">
-          Trouve ta prochaine lecture.
-        </p>
+            <p className="mt-2 font-ui text-sm font-semibold text-darkwood/60 md:text-base">
+              Trouve ta prochaine lecture.
+            </p>
+          </div>
+
+          <HeaderActions />
+        </div>
       </header>
 
       {/* Recherche */}
@@ -65,16 +75,19 @@ function Discover() {
       </section>
 
       {/* Mode découverte */}
-      {!isSearchMode && (
+      {!isSearchMode && !isForYouMode && (
         <DiscoverHome
           forYouBooks={forYouBooks}
           trendingBooks={trendingBooks}
           mustReadBooks={mustReadBooks}
-          preferences={TEMPORARY_PREFERENCES}
+          preferences={TEMPORARY_DISCOVER_PREFERENCE_LABELS}
           isLoading={isDiscoverLoading}
           error={discoverError}
         />
       )}
+
+      {/* Mode recommandations personnalisees */}
+      {isForYouMode && <ForYouRecommendations />}
 
       {/* Mode recherche */}
       {isSearchMode && (

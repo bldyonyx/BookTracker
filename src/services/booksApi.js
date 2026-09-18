@@ -89,12 +89,17 @@ export async function getBookSuggestions(query) {
  *
  * @param {string} subject - Catégorie de livres à rechercher.
  * @param {number} [maxResults=10] - Nombre maximum de livres à récupérer.
+ * @param {number} [startIndex=0] - Position du premier resultat Google Books.
  * @returns {Promise<Array>} Liste de livres formatés pour Book Tracker.
  * @throws {Error} Si la requête vers Google Books échoue.
  */
-export async function getBooksBySubject(subject, maxResults = 10) {
+export async function getBooksBySubject(
+  subject,
+  maxResults = 10,
+  startIndex = 0
+) {
   const response = await fetch(
-    `${BASE_URL}?q=subject:${encodeURIComponent(subject)}&langRestrict=fr&maxResults=${maxResults}&key=${API_KEY}`
+    `${BASE_URL}?q=subject:${encodeURIComponent(subject)}&langRestrict=fr&maxResults=${maxResults}&startIndex=${startIndex}&key=${API_KEY}`
   )
 
   if (!response.ok) {
