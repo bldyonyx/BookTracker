@@ -1,0 +1,565 @@
+/* =========================================================
+   BOOK TRACKER — STARLIGHT DOCUMENTATION THEME
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   FONTS
+   --------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/comfortaa/Comfortaa-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/comfortaa/Comfortaa-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/comfortaa/Comfortaa-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Frank Ruhl Libre';
+  src: url('/fonts/FrankRuhl/FrankRuhlLibre-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Frank Ruhl Libre';
+  src: url('/fonts/FrankRuhl/FrankRuhlLibre-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Frank Ruhl Libre';
+  src: url('/fonts/FrankRuhl/FrankRuhlLibre-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ---------------------------------------------------------
+   BOOK TRACKER PALETTE
+   --------------------------------------------------------- */
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --bt-darkwood: #453228;
+  --bt-walnut: #664839;
+  --bt-parchment: #e5d4c4;
+  --bt-cream: #eef3e4;
+  --bt-mintcream: #eef3da;
+  --bt-lime: #dceb86;
+  --bt-sage: #909977;
+  --bt-olive: #60674d;
+  --bt-forest: #3f584d;
+  --bt-dustyrose: #cdadac;
+  --bt-softpink: #e9b8ca;
+  --bt-ink: #2c3031;
+
+  /* Starlight accent */
+  --sl-color-accent-low: #e3e8c8;
+  --sl-color-accent: #664839;
+  --sl-color-accent-high: #453228;
+
+  /* Backgrounds */
+  --sl-color-bg: #eef3e4;
+  --sl-color-bg-nav: #453228;
+  --sl-color-bg-sidebar: #f3f5e9;
+  --sl-color-bg-inline-code: rgba(69, 50, 40, 0.08);
+
+  /* Text */
+  --sl-color-white: #453228;
+  --sl-color-gray-1: #453228;
+  --sl-color-gray-2: #664839;
+  --sl-color-gray-3: #60674d;
+  --sl-color-gray-4: #909977;
+  --sl-color-gray-5: #d9dfca;
+  --sl-color-gray-6: #eef3e4;
+  --sl-color-black: #2c3031;
+
+  --sl-color-text: #453228;
+  --sl-color-text-accent: #664839;
+
+  /* Borders */
+  --sl-color-hairline-light: rgba(69, 50, 40, 0.08);
+  --sl-color-hairline: rgba(69, 50, 40, 0.16);
+  --sl-color-hairline-shade: rgba(69, 50, 40, 0.24);
+
+  /* Fonts */
+  --sl-font: 'Comfortaa', sans-serif;
+  --sl-font-system: 'Comfortaa', sans-serif;
+}
+
+
+/* ---------------------------------------------------------
+   GLOBAL
+   --------------------------------------------------------- */
+
+html {
+  background: var(--bt-darkwood);
+}
+
+body {
+  font-family: 'Comfortaa', sans-serif;
+  color: var(--bt-darkwood);
+
+  background-color: var(--bt-mintcream);
+  background-image: url('/textures/green-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+
+/* ---------------------------------------------------------
+   TYPOGRAPHY
+   --------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.site-title {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--bt-darkwood);
+}
+
+h1,
+h2 {
+  font-weight: 700;
+}
+
+p,
+li {
+  color: var(--bt-darkwood);
+}
+
+strong {
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   TOP NAVBAR
+   --------------------------------------------------------- */
+
+header.header {
+  background-color: var(--bt-darkwood);
+  background-image: url('/textures/stripes-brown.jpg');
+  background-size: cover;
+  background-position: center;
+
+  border-bottom: 1px solid rgba(229, 212, 196, 0.18);
+}
+
+.site-title {
+  color: var(--bt-cream);
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+header.header a {
+  color: var(--bt-cream);
+}
+
+header.header svg {
+  color: var(--bt-cream);
+}
+
+
+/* Search */
+
+site-search button {
+  background: rgba(238, 243, 228, 0.94);
+  border-color: rgba(69, 50, 40, 0.15);
+  color: var(--bt-darkwood);
+}
+
+site-search button:hover {
+  background: var(--bt-cream);
+}
+
+
+/* ---------------------------------------------------------
+   MAIN PAGE
+   --------------------------------------------------------- */
+
+.page {
+  background-color: transparent;
+}
+
+.main-pane {
+  background-color: transparent;
+}
+
+.content-panel {
+  background-color: transparent;
+}
+
+
+/* ---------------------------------------------------------
+   HERO
+   --------------------------------------------------------- */
+
+.hero {
+  color: var(--bt-darkwood);
+}
+
+.hero h1 {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--bt-darkwood);
+  font-weight: 700;
+}
+
+.hero .tagline {
+  color: rgba(69, 50, 40, 0.76);
+}
+
+
+/* Hero buttons */
+
+.hero .actions a {
+  border-radius: 999px;
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.hero .actions a:hover {
+  transform: translateY(-2px);
+}
+
+
+/* Primary hero button */
+
+.hero .actions a.primary {
+  background: var(--bt-darkwood);
+  border-color: var(--bt-darkwood);
+  color: var(--bt-cream);
+}
+
+.hero .actions a.primary:hover {
+  background: var(--bt-walnut);
+  border-color: var(--bt-walnut);
+}
+
+
+/* Secondary hero button */
+
+.hero .actions a.minimal {
+  color: var(--bt-darkwood);
+}
+
+.hero .actions a.minimal svg {
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   MARKDOWN CONTENT
+   --------------------------------------------------------- */
+
+.sl-markdown-content {
+  color: var(--bt-darkwood);
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4 {
+  color: var(--bt-darkwood);
+}
+
+.sl-markdown-content p,
+.sl-markdown-content li {
+  color: var(--bt-darkwood);
+}
+
+.sl-markdown-content strong {
+  color: var(--bt-darkwood);
+}
+
+
+/* Links */
+
+.sl-markdown-content a {
+  color: var(--bt-forest);
+  text-decoration-color: rgba(63, 88, 77, 0.35);
+}
+
+.sl-markdown-content a:hover {
+  color: var(--bt-walnut);
+}
+
+
+/* ---------------------------------------------------------
+   STARLIGHT CARDS
+   --------------------------------------------------------- */
+
+.card {
+  border: 1px solid rgba(69, 50, 40, 0.12);
+  border-radius: 1.25rem;
+
+  background: rgba(238, 243, 228, 0.88);
+
+  color: var(--bt-darkwood);
+
+  box-shadow:
+    0 1px 2px rgba(69, 50, 40, 0.04),
+    0 8px 24px rgba(69, 50, 40, 0.04);
+}
+
+.card:hover {
+  border-color: rgba(69, 50, 40, 0.24);
+}
+
+.card .title,
+.card .title span {
+  color: var(--bt-darkwood);
+}
+
+.card p {
+  color: rgba(69, 50, 40, 0.72);
+}
+
+
+/* Card icons */
+
+.card .icon {
+  background: var(--bt-lime);
+  border-color: rgba(69, 50, 40, 0.15);
+  color: var(--bt-darkwood);
+}
+
+.card .icon svg {
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   SIDEBAR — INTERNAL DOC PAGES
+   --------------------------------------------------------- */
+
+.sidebar-pane {
+  background: rgba(238, 243, 228, 0.96);
+  border-right: 1px solid rgba(69, 50, 40, 0.12);
+}
+
+.sidebar-content {
+  font-family: 'Comfortaa', sans-serif;
+  color: var(--bt-darkwood);
+}
+
+.sidebar-content a {
+  border-radius: 0.6rem;
+  color: var(--bt-darkwood);
+}
+
+.sidebar-content a:hover {
+  background: rgba(220, 235, 134, 0.35);
+  color: var(--bt-darkwood);
+}
+
+.sidebar-content a[aria-current='page'] {
+  background: var(--bt-lime);
+  color: var(--bt-darkwood);
+  font-weight: 700;
+}
+
+.sidebar-content summary {
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   TABLE OF CONTENTS
+   --------------------------------------------------------- */
+
+.right-sidebar {
+  color: var(--bt-darkwood);
+}
+
+.right-sidebar a {
+  color: rgba(69, 50, 40, 0.65);
+}
+
+.right-sidebar a:hover,
+.right-sidebar a[aria-current='true'] {
+  color: var(--bt-forest);
+}
+
+
+/* ---------------------------------------------------------
+   PAGINATION
+   --------------------------------------------------------- */
+
+.pagination-links a {
+  border-color: rgba(69, 50, 40, 0.12);
+  border-radius: 1rem;
+  background: rgba(238, 243, 228, 0.8);
+  color: var(--bt-darkwood);
+}
+
+.pagination-links a:hover {
+  border-color: var(--bt-sage);
+  background: var(--bt-cream);
+}
+
+
+/* ---------------------------------------------------------
+   ASIDES / CALLOUTS
+   --------------------------------------------------------- */
+
+.starlight-aside {
+  border-radius: 1rem;
+  background: rgba(238, 243, 228, 0.8);
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   CODE
+   --------------------------------------------------------- */
+
+:not(pre) > code {
+  border-radius: 0.4rem;
+  background: rgba(69, 50, 40, 0.08);
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   SELECTION
+   --------------------------------------------------------- */
+
+::selection {
+  background: var(--bt-lime);
+  color: var(--bt-darkwood);
+}
+
+
+/* ---------------------------------------------------------
+   NOTES / ASIDES
+   --------------------------------------------------------- */
+
+.starlight-aside {
+  border-color: var(--bt-olive);
+  background: rgba(238, 243, 228, 0.9);
+  color: var(--bt-darkwood);
+}
+
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--bt-forest);
+  --sl-color-asides-border: var(--bt-olive);
+  background: rgba(238, 243, 228, 0.9);
+}
+
+.starlight-aside__title {
+  color: var(--bt-forest);
+}
+
+.starlight-aside__icon {
+  color: var(--bt-forest);
+}
+
+
+/* ---------------------------------------------------------
+   RIGHT TABLE OF CONTENTS
+   --------------------------------------------------------- */
+
+.right-sidebar {
+  width: 15rem;
+  background: transparent;
+}
+
+.right-sidebar-panel {
+  width: 15rem;
+  margin: 1.5rem auto;
+  padding: 1rem 1.25rem;
+
+  /* no card */
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.right-sidebar h2 {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.35rem;
+  color: var(--bt-darkwood);
+}
+
+.right-sidebar a {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(69, 50, 40, 0.62);
+}
+
+.right-sidebar a:hover,
+.right-sidebar a[aria-current='true'] {
+  color: var(--bt-forest);
+}
+
+
+/* ---------------------------------------------------------
+   CODE BLOCKS
+   --------------------------------------------------------- */
+
+.expressive-code {
+  --ec-brdRad: 0.9rem;
+}
+
+/* Bloc de code */
+.expressive-code .frame pre {
+  background: var(--bt-darkwood) !important;
+  border: 1px solid rgba(238, 243, 228, 0.12) !important;
+}
+
+/* Texte du code */
+.expressive-code code {
+  color: var(--bt-cream) !important;
+}
+
+/* Fallback pour les blocs Markdown simples */
+.sl-markdown-content pre {
+  background: var(--bt-darkwood) !important;
+  border: 1px solid rgba(69, 50, 40, 0.15);
+  border-radius: 0.9rem;
+}
+
+.sl-markdown-content pre code {
+  color: var(--bt-cream) !important;
+}
+
+/* Code inline : `comme ça` */
+.sl-markdown-content :not(pre) > code {
+  background: rgba(69, 50, 40, 0.1);
+  color: var(--bt-darkwood);
+  border-radius: 0.35rem;
+  padding: 0.15rem 0.35rem;
+}

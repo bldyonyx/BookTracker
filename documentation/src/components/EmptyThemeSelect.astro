@@ -1,0 +1,61 @@
+<a
+  href="https://mayas-portfolio.web.app"
+  class="portfolio-link"
+  aria-label="Voir mon portfolio"
+  title="Portfolio"
+>
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M8 5V3h8v2" />
+    <path d="M3 10h18" />
+    <path d="M10 10v2h4v-2" />
+  </svg>
+
+  <span>Portfolio</span>
+</a>
+
+<style>
+  .portfolio-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.75rem;
+
+    color: #eef3e4;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition:
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .portfolio-link:hover {
+    background: rgba(238, 243, 228, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .portfolio-link svg {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 50rem) {
+    .portfolio-link span {
+      display: none;
+    }
+  }
+</style>
