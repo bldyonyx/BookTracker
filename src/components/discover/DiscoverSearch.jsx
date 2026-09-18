@@ -64,7 +64,11 @@ function DiscoverSearch({
     <form
       ref={searchRef}
       onSubmit={onSubmit}
-      className="relative w-full max-w-2xl"
+      className="
+        relative w-full min-w-0
+        max-w-[calc(100vw-3rem)]
+        md:max-w-2xl
+      "
     >
       <div className="relative">
         {/* Loupe */}

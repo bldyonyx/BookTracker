@@ -67,7 +67,7 @@ function Discover() {
       setDiscoverError('')
 
       const results = await Promise.allSettled([
-        getBooksBySubject('mystery', 4),
+        getBooksBySubject('mystery', 5),
         getTrendingBooksDetails(10),
         getBooksBySubject('classics', 10),
       ])
@@ -232,13 +232,13 @@ function Discover() {
       {!isSearchMode && (
         <div className="mt-10 space-y-12">
           {isDiscoverLoading && (
-            <p className="font-ui text-sm text-darkwood/60">
+            <p className="max-w-[calc(100vw-3rem)] break-words font-ui text-sm text-darkwood/60 md:max-w-full">
               Préparation de tes découvertes...
             </p>
           )}
 
           {!isDiscoverLoading && discoverError && (
-            <p className="font-ui text-sm text-darkwood/60">
+            <p className="max-w-[calc(100vw-3rem)] break-words font-ui text-sm text-darkwood/60 md:max-w-full">
               {discoverError}
             </p>
           )}
@@ -302,7 +302,7 @@ function Discover() {
                 className="
                   mt-8
                   flex flex-col gap-4
-                  sm:flex-row sm:items-end sm:justify-between
+                  md:flex-row md:items-end md:justify-between
                 "
               >
                 <div>

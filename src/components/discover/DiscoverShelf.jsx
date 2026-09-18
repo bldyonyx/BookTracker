@@ -29,7 +29,7 @@ function DiscoverShelf({
             font-ui text-sm font-bold text-darkwood
             transition-opacity
             hover:opacity-60
-            sm:block
+            md:block
           "
         >
           Voir plus →
@@ -47,9 +47,8 @@ function DiscoverShelf({
           <div
             key={book.id}
             className="
-              w-32 shrink-0
-              sm:w-36
-              lg:w-40
+              w-36 shrink-0
+              md:w-40
             "
           >
             <BookCard

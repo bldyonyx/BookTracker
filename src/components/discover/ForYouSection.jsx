@@ -14,7 +14,7 @@ function ForYouSection({
         border border-walnut/15
         bg-cream/65
         p-5
-        sm:p-6
+        md:p-6
         lg:p-8
       "
     >
@@ -22,7 +22,7 @@ function ForYouSection({
       <div
         className="
           flex flex-col gap-5
-          sm:flex-row sm:items-start sm:justify-between
+          md:flex-row md:items-start md:justify-between
         "
       >
         <div className="min-w-0">
@@ -77,16 +77,17 @@ function ForYouSection({
         <button
           type="button"
           className="
-            hidden shrink-0 cursor-pointer
-            rounded-full
-            border border-walnut/20
-            bg-mintcream
-            px-4 py-2
+            w-fit shrink-0 cursor-pointer
             font-ui text-xs font-bold
             text-darkwood
             transition-colors
-            hover:bg-lime
-            sm:block
+            hover:text-walnut
+            md:rounded-full
+            md:border md:border-walnut/20
+            md:bg-mintcream
+            md:px-4 md:py-2
+            md:hover:bg-lime
+            md:hover:text-darkwood
           "
         >
           Voir toutes les suggestions →
@@ -99,14 +100,21 @@ function ForYouSection({
           mt-7 grid
           grid-cols-2
           gap-5
-          sm:grid-cols-4
-          lg:gap-7
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          lg:gap-8
         "
       >
-        {books.slice(0, 4).map((book) => (
+        {books.slice(0, 5).map((book, index) => (
           <div
             key={book.id}
-            className="mx-auto w-full max-w-40"
+            className={`
+              mx-auto w-full max-w-40
+              ${index >= 2 ? 'hidden md:block' : ''}
+              ${index >= 3 ? 'md:hidden lg:block' : ''}
+              ${index >= 4 ? 'lg:hidden xl:block' : ''}
+            `}
           >
             <BookCard
               bookId={book.id}
@@ -118,25 +126,6 @@ function ForYouSection({
         ))}
       </div>
 
-      {/* Action mobile */}
-      <div className="mt-6 flex justify-end sm:hidden">
-        <button
-          type="button"
-          className="
-            cursor-pointer
-            rounded-full
-            border border-walnut/20
-            bg-mintcream
-            px-4 py-2
-            font-ui text-xs font-bold
-            text-darkwood
-            transition-colors
-            hover:bg-lime
-          "
-        >
-          Voir toutes les suggestions →
-        </button>
-      </div>
     </section>
   )
 }
