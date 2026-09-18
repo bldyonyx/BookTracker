@@ -113,3 +113,13 @@
     background-repeat: no-repeat;
   }
 }
+
+/* Cache la scrollbar tout en gardant le scroll horizontal */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

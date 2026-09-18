@@ -1,5 +1,6 @@
 import CurrentlyReading from '../components/dashboard/CurrentlyReading'
 import ReadingGoal from '../components/dashboard/ReadingGoal'
+import RecentlyAdded from '../components/dashboard/RecentlyAdded'
 
 function Dashboard() {
   return (
@@ -14,10 +15,15 @@ function Dashboard() {
         </p>
       </header>
 
+      {/* Première rangée */}
       <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <CurrentlyReading />
-
         <ReadingGoal />
+      </div>
+
+      {/* Livres récemment ajoutés */}
+      <div className="mt-6">
+        <RecentlyAdded />
       </div>
     </div>
   )
