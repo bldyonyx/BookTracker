@@ -1,4 +1,5 @@
 import CurrentlyReading from '../components/dashboard/CurrentlyReading'
+import ReadingGoal from '../components/dashboard/ReadingGoal'
 
 function Dashboard() {
   return (
@@ -16,11 +17,7 @@ function Dashboard() {
       <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
         <CurrentlyReading />
 
-        <div className="rounded-3xl border border-darkwood/10 bg-cream/80 p-5 md:p-6">
-          <h2 className="font-heading text-2xl font-bold text-darkwood">
-            Objectif de lecture
-          </h2>
-        </div>
+        <ReadingGoal />
       </div>
     </div>
   )
