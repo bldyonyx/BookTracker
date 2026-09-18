@@ -35,6 +35,12 @@ function Discover() {
     mustReadBooks,
     isDiscoverLoading,
     discoverError,
+    isTrendingRefreshing,
+    trendingRefreshError,
+    refreshTrendingBooks,
+    isMustReadRefreshing,
+    mustReadRefreshError,
+    refreshMustReadBooks,
   } = useDiscoverHomeBooks(isSearchMode || isForYouMode)
 
   return (
@@ -83,6 +89,12 @@ function Discover() {
           preferences={TEMPORARY_DISCOVER_PREFERENCE_LABELS}
           isLoading={isDiscoverLoading}
           error={discoverError}
+          isTrendingRefreshing={isTrendingRefreshing}
+          trendingRefreshError={trendingRefreshError}
+          onRefreshTrending={refreshTrendingBooks}
+          isMustReadRefreshing={isMustReadRefreshing}
+          mustReadRefreshError={mustReadRefreshError}
+          onRefreshMustReads={refreshMustReadBooks}
         />
       )}
 

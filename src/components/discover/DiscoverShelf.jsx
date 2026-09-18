@@ -4,6 +4,9 @@ function DiscoverShelf({
   title,
   description,
   books,
+  error = '',
+  isRefreshing = false,
+  onRefresh,
 }) {
   if (books.length === 0) return null
 
@@ -22,34 +25,62 @@ function DiscoverShelf({
           )}
         </div>
 
-        <button
-          type="button"
-          className="
-            hidden shrink-0 cursor-pointer
-            font-ui text-sm font-bold text-darkwood
-            transition-opacity
-            hover:opacity-60
-            md:block
-          "
-        >
-          Voir plus →
-        </button>
+        {onRefresh && (
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            aria-label={`Rafraichir ${title}`}
+            className="
+              grid size-10 shrink-0 place-items-center
+              rounded-full border border-walnut/20
+              bg-mintcream
+              font-ui text-xl font-bold text-darkwood
+              transition
+              hover:bg-lime
+              disabled:cursor-wait disabled:opacity-60
+            "
+          >
+            <span
+              className={
+                isRefreshing
+                  ? 'inline-block animate-spin'
+                  : 'inline-block'
+              }
+              aria-hidden="true"
+            >
+              ↻
+            </span>
+          </button>
+        )}
       </div>
+
+      {error && (
+        <p className="mt-3 font-ui text-sm text-darkwood/55">
+          {error}
+        </p>
+      )}
 
       <div
         className="
-          mt-6 flex gap-6
-          overflow-x-auto
-          pb-2
+          mt-6 grid
+          grid-cols-2
+          gap-5
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          lg:gap-8
         "
       >
-        {books.map((book) => (
+        {books.map((book, index) => (
           <div
             key={book.id}
-            className="
-              w-36 shrink-0
-              md:w-40
-            "
+            className={`
+              mx-auto w-full max-w-40
+              ${index >= 2 ? 'hidden md:block' : ''}
+              ${index >= 3 ? 'md:hidden lg:block' : ''}
+              ${index >= 4 ? 'lg:hidden xl:block' : ''}
+            `}
           >
             <BookCard
               bookId={book.id}

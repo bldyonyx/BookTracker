@@ -8,6 +8,12 @@ function DiscoverHome({
   preferences,
   isLoading,
   error,
+  isTrendingRefreshing,
+  trendingRefreshError,
+  onRefreshTrending,
+  isMustReadRefreshing,
+  mustReadRefreshError,
+  onRefreshMustReads,
 }) {
   return (
     <div className="mt-10 space-y-12">
@@ -34,12 +40,18 @@ function DiscoverHome({
             title="Tendances du moment"
             description="Les livres qui attirent l'attention en ce moment."
             books={trendingBooks}
+            error={trendingRefreshError}
+            isRefreshing={isTrendingRefreshing}
+            onRefresh={onRefreshTrending}
           />
 
           <DiscoverShelf
             title="Les incontournables"
             description="Des histoires intemporelles à découvrir."
             books={mustReadBooks}
+            error={mustReadRefreshError}
+            isRefreshing={isMustReadRefreshing}
+            onRefresh={onRefreshMustReads}
           />
         </>
       )}
