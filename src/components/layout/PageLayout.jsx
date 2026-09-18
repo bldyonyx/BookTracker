@@ -80,9 +80,9 @@ function PageLayout() {
             w-full
             min-w-0
             bg-mintcream
-            bg-cover
-            bg-center
-            bg-no-repeat
+            bg-[length:100%_auto]
+            bg-top
+            bg-repeat-y
             pb-19
             md:pb-0
             lg:min-h-[calc(100vh-2rem)]

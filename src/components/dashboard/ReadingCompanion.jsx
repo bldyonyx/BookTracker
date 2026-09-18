@@ -2,20 +2,21 @@ import sleepingCat from '../../assets/images/cats/sleeping-cat.png'
 
 function ReadingCompanion() {
   return (
-    <section className="flex h-full min-w-0 items-center">
+    <section className="flex h-full min-w-0 items-center justify-center">
       <div
         className="
           flex w-full min-w-0
           flex-col items-center justify-center gap-4
-          xl:flex-row xl:justify-center
+          md:flex-row md:gap-6
+          xl:gap-4
           2xl:gap-6
         "
       >
         {/* Chat */}
         <div
           className="
-            flex w-full items-center justify-center
-            xl:w-1/2
+            flex items-center justify-center
+            md:w-auto md:flex-1
           "
         >
           <img
@@ -23,6 +24,8 @@ function ReadingCompanion() {
             alt="Petit chat tortoiseshell endormi"
             className="
               w-64 max-w-full object-contain
+              md:w-64
+              lg:w-72
               xl:w-full xl:max-w-72
               2xl:max-w-80
             "
@@ -38,7 +41,7 @@ function ReadingCompanion() {
             bg-cream/80
             px-5 py-5
             text-center
-            xl:w-1/2
+            md:w-64 md:shrink-0
             2xl:max-w-72
             2xl:px-7
           "
