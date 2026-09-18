@@ -8,7 +8,7 @@ import Sidebar from './Sidebar'
 function PageLayout() {
   return (
     <div
-      className="flex min-h-screen w-screen max-w-full overflow-x-hidden bg-darkwood bg-cover bg-center bg-no-repeat font-ui text-ink"
+      className="min-h-screen w-screen max-w-full overflow-x-hidden bg-darkwood bg-cover bg-center bg-no-repeat font-ui text-ink"
       style={{ backgroundImage: `url(${stripesBrownWide})` }}
     >
       <Sidebar />
@@ -41,14 +41,28 @@ function PageLayout() {
       </div>
 
       {/* Page content */}
-      <main className="min-w-0 max-w-full flex-1 overflow-x-hidden pb-24 pt-14 text-darkwood md:pb-0 md:pt-0 lg:p-4">
+      <main
+        className="
+          min-w-0
+          max-w-full
+          overflow-x-hidden
+          pt-14
+          text-darkwood
+          md:ml-46
+          md:pt-0
+          lg:ml-72
+          lg:p-4
+        "
+      >
         <div
           className="
-            min-h-[calc(100vh-8rem)]
+            min-h-[calc(100vh-3.5rem)]
             bg-mintcream
             bg-cover
             bg-center
             bg-no-repeat
+            pb-[76px]
+            md:pb-0
             lg:min-h-[calc(100vh-2rem)]
             lg:rounded-2xl
           "

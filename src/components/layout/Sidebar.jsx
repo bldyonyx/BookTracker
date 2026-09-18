@@ -5,7 +5,16 @@ import { desktopNavigationItems } from './navigation'
 function Sidebar() {
   return (
     <aside
-      className="hidden min-h-screen w-46 shrink-0 flex-col border-r-2 border-cream/20 bg-darkwood bg-cover bg-center bg-no-repeat px-3 py-5 text-cream md:flex lg:w-72 lg:px-5 lg:py-6"
+      className="
+        fixed inset-y-0 left-0 z-40
+        hidden h-screen w-46
+        flex-col
+        border-r-2 border-cream/20
+        bg-darkwood bg-cover bg-center bg-no-repeat
+        px-3 py-5 text-cream
+        md:flex
+        lg:w-72 lg:px-5 lg:py-6
+      "
       style={{ backgroundImage: `url(${stripesBrown})` }}
     >
       <div className="mb-6 lg:mb-10">
