@@ -105,3 +105,31 @@ export async function getBooksBySubject(subject, maxResults = 10) {
 
   return data.items?.map(formatBook) || []
 }
+
+/**
+ * Recherche un livre Google Books à partir de son ISBN.
+ *
+ * @param {string} isbn - ISBN du livre à rechercher.
+ * @returns {Promise<Object|null>} Livre formaté ou null si aucun résultat.
+ * @throws {Error} Si la requête Google Books échoue.
+ */
+export async function getBookByIsbn(isbn) {
+  if (!isbn) {
+    return null
+  }
+
+  const response = await fetch(
+    `${BASE_URL}?q=isbn:${encodeURIComponent(isbn)}&langRestrict=fr&maxResults=1&key=${API_KEY}`
+  )
+
+  if (!response.ok) {
+    throw new Error(
+      'Impossible de récupérer les informations du livre.'
+    )
+  }
+
+  const data = await response.json()
+  const item = data.items?.[0]
+
+  return item ? formatBook(item) : null
+}

@@ -26,17 +26,17 @@ function ForYouSection({
         "
       >
         <div className="min-w-0">
-          <p className="font-handwritten text-lg text-walnut">
-            rien que pour toi ♡
-          </p>
+            <p className="font-handwritten text-lg text-walnut">
+            ton mood lecture ♡
+            </p>
 
-          <h2 className="mt-1 font-heading text-3xl font-bold text-darkwood">
+            <h2 className="mt-1 font-heading text-3xl font-bold text-darkwood">
             Peut-être pour toi
-          </h2>
+            </h2>
 
-          <p className="mt-2 font-ui text-sm text-darkwood/60">
-            Des livres choisis selon tes goûts de lecture.
-          </p>
+            <p className="mt-2 font-ui text-sm text-darkwood/60">
+            Quelques livres qui pourraient te plaire.
+            </p>
 
           {/* Préférences */}
           <div className="mt-4 flex flex-wrap items-center gap-2">

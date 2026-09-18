@@ -21,10 +21,50 @@ function BookCard({
           "
         />
       ) : (
-        <div className="flex h-full items-center justify-center p-4 text-center">
-          <span className="font-ui text-xs text-darkwood/50">
-            Couverture indisponible
-          </span>
+        <div
+          className="
+            relative
+            flex h-full w-full
+            items-center justify-center
+           bg-sage/20
+            p-4
+          "
+        >
+          {/* Bordure intérieure façon couverture de livre */}
+          <div
+            className="
+              absolute inset-2
+              rounded-lg
+              border border-olive/20
+            "
+          />
+
+          {/* Contenu du fallback */}
+          <div className="relative text-center">
+            <span
+              aria-hidden="true"
+              className="
+                font-heading
+                text-3xl
+                text-olive/40
+              "
+            >
+              ♡
+            </span>
+
+            <p
+              className="
+                mt-3
+                font-ui text-[10px]
+                leading-relaxed
+                text-darkwood/40
+              "
+            >
+              Couverture
+              <br />
+              indisponible
+            </p>
+          </div>
         </div>
       )}
     </div>

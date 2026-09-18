@@ -9,6 +9,7 @@ import {
   getBooksBySubject,
   searchBooks,
 } from '../services/booksApi'
+import { getTrendingBooksDetails } from '../services/trendingBooksApi'
 
 const TEMPORARY_PREFERENCES = [
   'Fantasy',
@@ -34,9 +35,10 @@ function Discover() {
 
   // Découverte
   const [forYouBooks, setForYouBooks] = useState([])
-  const [classicBooks, setClassicBooks] = useState([])
-  const [fantasyBooks, setFantasyBooks] = useState([])
-  const [isDiscoverLoading, setIsDiscoverLoading] = useState(false)
+  const [trendingBooks, setTrendingBooks] = useState([])
+  const [mustReadBooks, setMustReadBooks] = useState([])
+  const [isDiscoverLoading, setIsDiscoverLoading] =
+    useState(false)
   const [discoverError, setDiscoverError] = useState('')
 
   /*
@@ -48,7 +50,11 @@ function Discover() {
   }, [queryFromUrl])
 
   /*
-   * Charge les sélections de la page Découvrir.
+   * Charge indépendamment les différentes sélections
+   * de la page Découvrir.
+   *
+   * Promise.allSettled permet aux autres sections de rester
+   * disponibles si une API ou une requête échoue.
    *
    * Les préférences sont temporaires jusqu'à la mise
    * en place de Firebase et de l'onboarding.
@@ -57,24 +63,53 @@ function Discover() {
     if (isSearchMode) return
 
     async function loadDiscoverBooks() {
-      try {
-        setIsDiscoverLoading(true)
-        setDiscoverError('')
+      setIsDiscoverLoading(true)
+      setDiscoverError('')
 
-        const [forYou, classics, fantasy] = await Promise.all([
-          getBooksBySubject('mystery', 4),
-          getBooksBySubject('classics', 10),
-          getBooksBySubject('fantasy', 10),
-        ])
+      const results = await Promise.allSettled([
+        getBooksBySubject('mystery', 4),
+        getTrendingBooksDetails(10),
+        getBooksBySubject('classics', 10),
+      ])
 
-        setForYouBooks(forYou)
-        setClassicBooks(classics)
-        setFantasyBooks(fantasy)
-      } catch (err) {
-        setDiscoverError(err.message)
-      } finally {
-        setIsDiscoverLoading(false)
+      const [
+        forYouResult,
+        trendingResult,
+        mustReadsResult,
+      ] = results
+
+      // Peut-être pour toi
+      if (forYouResult.status === 'fulfilled') {
+        setForYouBooks(forYouResult.value)
+      } else {
+        setForYouBooks([])
       }
+
+      // Tendances du moment
+      if (trendingResult.status === 'fulfilled') {
+        setTrendingBooks(trendingResult.value)
+      } else {
+        setTrendingBooks([])
+      }
+
+      // Les incontournables
+      if (mustReadsResult.status === 'fulfilled') {
+        setMustReadBooks(mustReadsResult.value)
+      } else {
+        setMustReadBooks([])
+      }
+
+      const hasFailedRequest = results.some(
+        (result) => result.status === 'rejected'
+      )
+
+      if (hasFailedRequest) {
+        setDiscoverError(
+          'Certaines sélections sont temporairement indisponibles.'
+        )
+      }
+
+      setIsDiscoverLoading(false)
     }
 
     loadDiscoverBooks()
@@ -202,13 +237,13 @@ function Discover() {
             </p>
           )}
 
-          {discoverError && (
-            <p className="font-ui text-sm text-darkwood">
+          {!isDiscoverLoading && discoverError && (
+            <p className="font-ui text-sm text-darkwood/60">
               {discoverError}
             </p>
           )}
 
-          {!isDiscoverLoading && !discoverError && (
+          {!isDiscoverLoading && (
             <>
               <ForYouSection
                 books={forYouBooks}
@@ -216,15 +251,15 @@ function Discover() {
               />
 
               <DiscoverShelf
-                title="Les classiques"
-                description="Quelques histoires intemporelles à découvrir."
-                books={classicBooks}
+                title="Tendances du moment"
+                description="Les livres qui attirent l'attention en ce moment."
+                books={trendingBooks}
               />
 
               <DiscoverShelf
-                title="Fantasy & imaginaire"
-                description="Un peu de magie pour ta prochaine lecture."
-                books={fantasyBooks}
+                title="Les incontournables"
+                description="Des histoires intemporelles à découvrir."
+                books={mustReadBooks}
               />
             </>
           )}
