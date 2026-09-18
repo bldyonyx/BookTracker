@@ -34,7 +34,7 @@ function ForYouSection({
             Peut-être pour toi
             </h2>
 
-            <p className="mt-2 font-ui text-sm text-darkwood/60">
+            <p className="mt-1 font-ui text-sm text-darkwood/60">
             Quelques livres qui pourraient te plaire.
             </p>
 

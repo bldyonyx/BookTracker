@@ -26,9 +26,9 @@ function DiscoverShelf({
           type="button"
           className="
             hidden shrink-0 cursor-pointer
-            font-ui text-sm font-bold text-darkwood/60
-            transition-colors
-            hover:text-darkwood
+            font-ui text-sm font-bold text-darkwood
+            transition-opacity
+            hover:opacity-60
             sm:block
           "
         >
@@ -38,9 +38,9 @@ function DiscoverShelf({
 
       <div
         className="
-          mt-5 flex gap-5
+          mt-6 flex gap-6
           overflow-x-auto
-          pb-3
+          pb-2
         "
       >
         {books.map((book) => (
