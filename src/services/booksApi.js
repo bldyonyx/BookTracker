@@ -40,11 +40,65 @@ function formatBook(item) {
  */
 export async function searchBooks(query) {
   const response = await fetch(
-    `${BASE_URL}?q=${encodeURIComponent(query)}&key=${API_KEY}`
+    `${BASE_URL}?q=${encodeURIComponent(query)}&langRestrict=fr&key=${API_KEY}`
   )
 
   if (!response.ok) {
     throw new Error('Impossible de récupérer les livres.')
+  }
+
+  const data = await response.json()
+
+  return data.items?.map(formatBook) || []
+}
+
+/**
+ * Récupère quelques suggestions de livres à partir
+ * de la recherche saisie par l'utilisateur.
+ *
+ * @param {string} query - Texte actuellement saisi.
+ * @returns {Promise<Array>} Liste courte de livres suggérés.
+ * @throws {Error} Si la requête vers Google Books échoue.
+ */
+export async function getBookSuggestions(query) {
+  const trimmedQuery = query.trim()
+
+  if (trimmedQuery.length < 2) {
+    return []
+  }
+
+  const response = await fetch(
+    `${BASE_URL}?q=${encodeURIComponent(trimmedQuery)}&langRestrict=fr&maxResults=5&key=${API_KEY}`
+  )
+
+  if (!response.ok) {
+    throw new Error('Impossible de récupérer les suggestions.')
+  }
+
+  const data = await response.json()
+
+  return data.items?.map(formatBook) || []
+}
+
+
+/**
+ * Récupère des livres appartenant à une catégorie Google Books.
+ *
+ * Cette fonction est utilisée pour construire les différentes
+ * sélections de la page Découvrir.
+ *
+ * @param {string} subject - Catégorie de livres à rechercher.
+ * @param {number} [maxResults=10] - Nombre maximum de livres à récupérer.
+ * @returns {Promise<Array>} Liste de livres formatés pour Book Tracker.
+ * @throws {Error} Si la requête vers Google Books échoue.
+ */
+export async function getBooksBySubject(subject, maxResults = 10) {
+  const response = await fetch(
+    `${BASE_URL}?q=subject:${encodeURIComponent(subject)}&langRestrict=fr&maxResults=${maxResults}&key=${API_KEY}`
+  )
+
+  if (!response.ok) {
+    throw new Error('Impossible de récupérer cette sélection de livres.')
   }
 
   const data = await response.json()

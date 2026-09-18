@@ -123,3 +123,10 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+
+/* Cache la croix native ajoutée par le navigateur aux inputs search. */
+input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+  -webkit-appearance: none;
+}
