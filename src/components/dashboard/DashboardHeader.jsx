@@ -57,7 +57,7 @@ function DashboardHeader() {
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Rechercher un livre..."
               aria-label="Rechercher un livre"
-              className="w-full !rounded-full px-6 py-3"
+              className="w-full rounded-full! px-6 py-3"
             />
           </form>
 
@@ -162,7 +162,7 @@ function DashboardHeader() {
             placeholder="Rechercher un livre..."
             aria-label="Rechercher un livre"
             autoFocus
-            className="w-full !rounded-full px-6 py-3"
+            className="w-full rounded-full! px-6 py-3"
           />
         </form>
       )}
