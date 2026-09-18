@@ -4,51 +4,58 @@ function ReadingStats() {
   const favoriteGenre = 'Fantasy'
 
   return (
-    <section className="flex h-full flex-col rounded-3xl border border-darkwood/10 bg-cream/80 p-5 md:p-6">
+    <section className="h-full rounded-3xl border border-darkwood/10 bg-cream/80 p-4 sm:p-5 md:p-6">
       <div>
         <h2 className="font-heading text-2xl font-bold text-darkwood">
           Tes lectures
         </h2>
 
-        <p className="mt-1 font-ui text-sm text-darkwood/60">
+        <p className="mt-1 font-ui text-xs text-darkwood/60 sm:text-sm">
           Un petit aperçu de ta bibliothèque.
         </p>
       </div>
 
-      <div className="flex flex-1 items-center">
-        <div className="grid w-full grid-cols-3 items-center">
-          {/* Nombre total de livres */}
-          <div className="text-center">
-            <p className="font-heading text-4xl font-bold text-darkwood">
-              {totalBooks}
-            </p>
+      {/* Statistiques */}
+      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3">
+        {/* Nombre total de livres */}
+        <div className="flex flex-col items-center px-2 text-center sm:px-4">
+          <p className="font-heading text-3xl font-bold text-darkwood sm:text-4xl">
+            {totalBooks}
+          </p>
 
-            <p className="mt-1 font-ui text-xs text-darkwood/50">
-              livres
-            </p>
-          </div>
+          <p className="mt-1 font-ui text-xs font-bold text-darkwood">
+            livres
+          </p>
 
-          {/* Livres en cours */}
-          <div className="border-x border-darkwood/10 text-center">
-            <p className="font-heading text-4xl font-bold text-darkwood">
-              {currentlyReading}
-            </p>
+          <p className="mt-0.5 font-ui text-[0.65rem] text-darkwood/50 sm:text-xs">
+            dans ta bibliothèque
+          </p>
+        </div>
 
-            <p className="mt-1 font-ui text-xs text-darkwood/50">
-              en cours
-            </p>
-          </div>
+        {/* Livres en cours */}
+        <div className="flex flex-col items-center border-l border-darkwood/15 px-2 text-center sm:border-x sm:px-4">
+          <p className="font-heading text-3xl font-bold text-darkwood sm:text-4xl">
+            {currentlyReading}
+          </p>
 
-          {/* Genre le plus lu */}
-          <div className="text-center">
-            <p className="font-heading text-xl font-bold text-darkwood">
-              {favoriteGenre}
-            </p>
+          <p className="mt-1 font-ui text-xs font-bold text-darkwood">
+            en cours
+          </p>
 
-            <p className="mt-1 font-ui text-xs text-darkwood/50">
-              genre le plus lu
-            </p>
-          </div>
+          <p className="mt-0.5 font-ui text-[0.65rem] text-darkwood/50 sm:text-xs">
+            actuellement
+          </p>
+        </div>
+
+        {/* Genre le plus lu */}
+        <div className="col-span-2 mt-5 flex flex-col items-center border-t border-darkwood/15 pt-5 text-center sm:col-span-1 sm:mt-0 sm:border-t-0 sm:pt-0">
+          <p className="font-heading text-2xl font-bold text-darkwood">
+            {favoriteGenre}
+          </p>
+
+          <p className="mt-1 font-ui text-xs text-darkwood/50">
+            genre le plus lu
+          </p>
         </div>
       </div>
     </section>
