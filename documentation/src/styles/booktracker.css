@@ -152,10 +152,7 @@ h2 {
 }
 
 p,
-li {
-  color: var(--bt-darkwood);
-}
-
+li,
 strong {
   color: var(--bt-darkwood);
 }
@@ -201,19 +198,22 @@ site-search button:hover {
   background: var(--bt-cream);
 }
 
+/* Search icon */
+site-search button svg,
+site-search button svg path,
+site-search button svg circle,
+site-search button svg line {
+  color: var(--bt-darkwood) !important;
+  stroke: var(--bt-darkwood) !important;
+}
+
 
 /* ---------------------------------------------------------
    MAIN PAGE
    --------------------------------------------------------- */
 
-.page {
-  background-color: transparent;
-}
-
-.main-pane {
-  background-color: transparent;
-}
-
+.page,
+.main-pane,
 .content-panel {
   background-color: transparent;
 }
@@ -244,6 +244,7 @@ site-search button:hover {
   border-radius: 999px;
   font-family: 'Comfortaa', sans-serif;
   font-weight: 700;
+
   transition:
     transform 160ms ease,
     background-color 160ms ease;
@@ -290,15 +291,9 @@ site-search button:hover {
 .sl-markdown-content h1,
 .sl-markdown-content h2,
 .sl-markdown-content h3,
-.sl-markdown-content h4 {
-  color: var(--bt-darkwood);
-}
-
+.sl-markdown-content h4,
 .sl-markdown-content p,
-.sl-markdown-content li {
-  color: var(--bt-darkwood);
-}
-
+.sl-markdown-content li,
 .sl-markdown-content strong {
   color: var(--bt-darkwood);
 }
@@ -325,7 +320,6 @@ site-search button:hover {
   border-radius: 1.25rem;
 
   background: rgba(238, 243, 228, 0.88);
-
   color: var(--bt-darkwood);
 
   box-shadow:
@@ -399,101 +393,22 @@ site-search button:hover {
    TABLE OF CONTENTS
    --------------------------------------------------------- */
 
-.right-sidebar {
-  color: var(--bt-darkwood);
-}
-
-.right-sidebar a {
-  color: rgba(69, 50, 40, 0.65);
-}
-
-.right-sidebar a:hover,
-.right-sidebar a[aria-current='true'] {
-  color: var(--bt-forest);
+/*
+ * Starlight affiche un menu déroulant "On this page"
+ * sur les écrans où le sommaire desktop ne tient plus.
+ * Book Tracker ne l'utilise pas.
+ */
+mobile-starlight-toc {
+  display: none !important;
 }
 
 
-/* ---------------------------------------------------------
-   PAGINATION
-   --------------------------------------------------------- */
-
-.pagination-links a {
-  border-color: rgba(69, 50, 40, 0.12);
-  border-radius: 1rem;
-  background: rgba(238, 243, 228, 0.8);
-  color: var(--bt-darkwood);
-}
-
-.pagination-links a:hover {
-  border-color: var(--bt-sage);
-  background: var(--bt-cream);
-}
-
-
-/* ---------------------------------------------------------
-   ASIDES / CALLOUTS
-   --------------------------------------------------------- */
-
-.starlight-aside {
-  border-radius: 1rem;
-  background: rgba(238, 243, 228, 0.8);
-  color: var(--bt-darkwood);
-}
-
-
-/* ---------------------------------------------------------
-   CODE
-   --------------------------------------------------------- */
-
-:not(pre) > code {
-  border-radius: 0.4rem;
-  background: rgba(69, 50, 40, 0.08);
-  color: var(--bt-darkwood);
-}
-
-
-/* ---------------------------------------------------------
-   SELECTION
-   --------------------------------------------------------- */
-
-::selection {
-  background: var(--bt-lime);
-  color: var(--bt-darkwood);
-}
-
-
-/* ---------------------------------------------------------
-   NOTES / ASIDES
-   --------------------------------------------------------- */
-
-.starlight-aside {
-  border-color: var(--bt-olive);
-  background: rgba(238, 243, 228, 0.9);
-  color: var(--bt-darkwood);
-}
-
-.starlight-aside--note {
-  --sl-color-asides-text-accent: var(--bt-forest);
-  --sl-color-asides-border: var(--bt-olive);
-  background: rgba(238, 243, 228, 0.9);
-}
-
-.starlight-aside__title {
-  color: var(--bt-forest);
-}
-
-.starlight-aside__icon {
-  color: var(--bt-forest);
-}
-
-
-/* ---------------------------------------------------------
-   RIGHT TABLE OF CONTENTS
-   --------------------------------------------------------- */
+/* Desktop table of contents */
 
 .right-sidebar {
   width: 15rem;
   background: transparent;
+  color: var(--bt-darkwood);
 }
 
 .right-sidebar-panel {
@@ -501,7 +416,6 @@ site-search button:hover {
   margin: 1.5rem auto;
   padding: 1rem 1.25rem;
 
-  /* no card */
   border: none;
   border-radius: 0;
   background: transparent;
@@ -527,25 +441,87 @@ site-search button:hover {
 
 
 /* ---------------------------------------------------------
-   CODE BLOCKS
+   PAGINATION
    --------------------------------------------------------- */
+
+.pagination-links a {
+  border: 1px solid rgba(69, 50, 40, 0.12);
+  border-radius: 1rem;
+
+  background: rgba(238, 243, 228, 0.8);
+  color: var(--bt-darkwood);
+}
+
+.pagination-links a:hover {
+  border-color: var(--bt-sage);
+  background: var(--bt-cream);
+}
+
+
+/* ---------------------------------------------------------
+   ASIDES / CALLOUTS
+   --------------------------------------------------------- */
+
+.starlight-aside {
+  border-color: var(--bt-olive);
+  border-radius: 1rem;
+
+  background: rgba(238, 243, 228, 0.9);
+  color: var(--bt-darkwood);
+}
+
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--bt-forest);
+  --sl-color-asides-border: var(--bt-olive);
+
+  background: rgba(238, 243, 228, 0.9);
+}
+
+.starlight-aside__title,
+.starlight-aside__icon {
+  color: var(--bt-forest);
+}
+
+
+/* ---------------------------------------------------------
+   CODE
+   --------------------------------------------------------- */
+
+/* Inline code */
+
+:not(pre) > code {
+  border-radius: 0.4rem;
+  background: rgba(69, 50, 40, 0.08);
+  color: var(--bt-darkwood);
+}
+
+.sl-markdown-content :not(pre) > code {
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.35rem;
+
+  background: rgba(69, 50, 40, 0.1);
+  color: var(--bt-darkwood);
+}
+
+
+/* Code blocks */
 
 .expressive-code {
   --ec-brdRad: 0.9rem;
 }
 
-/* Bloc de code */
 .expressive-code .frame pre {
   background: var(--bt-darkwood) !important;
   border: 1px solid rgba(238, 243, 228, 0.12) !important;
 }
 
-/* Texte du code */
 .expressive-code code {
   color: var(--bt-cream) !important;
 }
 
-/* Fallback pour les blocs Markdown simples */
+
+/* Markdown fallback */
+
 .sl-markdown-content pre {
   background: var(--bt-darkwood) !important;
   border: 1px solid rgba(69, 50, 40, 0.15);
@@ -556,10 +532,102 @@ site-search button:hover {
   color: var(--bt-cream) !important;
 }
 
-/* Code inline : `comme ça` */
-.sl-markdown-content :not(pre) > code {
-  background: rgba(69, 50, 40, 0.1);
+
+/* Remove Expressive Code terminal window decoration */
+
+.expressive-code .frame.is-terminal .header {
+  display: none;
+}
+
+.expressive-code .frame.is-terminal pre {
+  border-radius: 0.9rem !important;
+}
+
+
+/* ---------------------------------------------------------
+   SELECTION
+   --------------------------------------------------------- */
+
+::selection {
+  background: var(--bt-lime);
   color: var(--bt-darkwood);
-  border-radius: 0.35rem;
-  padding: 0.15rem 0.35rem;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 50rem) {
+  /* ---------------------------------------------------------
+     TOP NAVBAR
+     --------------------------------------------------------- */
+
+  header.header {
+    height: 4rem;
+    padding-inline: 0.9rem;
+
+    background-color: var(--bt-darkwood);
+    background-image: url('/textures/stripes-brown.jpg');
+    background-size: cover;
+    background-position: center;
+
+    border-bottom: 1px solid rgba(229, 212, 196, 0.18);
+  }
+
+  /* Book Tracker title */
+  header.header .site-title {
+    font-size: 1.35rem;
+    white-space: nowrap;
+    color: var(--bt-cream);
+  }
+
+
+  /* ---------------------------------------------------------
+     MOBILE HEADER ACTIONS
+     --------------------------------------------------------- */
+
+  /* Hide search on mobile */
+  header.header site-search {
+    display: none !important;
+  }
+
+  /* Hide desktop-only links */
+  header.header .social-icons,
+  header.header .portfolio-link {
+    display: none !important;
+  }
+
+
+    /* ---------------------------------------------------------
+    MOBILE MENU BUTTON
+    --------------------------------------------------------- */
+
+    button.sl-menu-button,
+    button.sl-menu-button[aria-expanded='true'] {
+    background-color: var(--bt-lime) !important;
+    color: var(--bt-darkwood) !important;
+    }
+
+    button.sl-menu-button svg,
+    button.sl-menu-button svg path,
+    button.sl-menu-button svg line {
+    color: var(--bt-darkwood) !important;
+    stroke: var(--bt-darkwood) !important;
+    }
+
+
+  /* ---------------------------------------------------------
+     CONTENT
+     --------------------------------------------------------- */
+
+  .sl-markdown-content {
+    min-width: 0;
+  }
+
+  .sl-markdown-content img,
+  .sl-markdown-content pre,
+  .sl-markdown-content table {
+    max-width: 100%;
+  }
 }

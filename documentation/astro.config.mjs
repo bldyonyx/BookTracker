@@ -7,6 +7,13 @@ export default defineConfig({
     starlight({
       title: 'Book Tracker',
 
+	  locales: {
+		root: {
+			label: 'Français',
+			lang: 'fr',
+		},
+		},
+
       customCss: [
         './src/styles/booktracker.css',
       ],
