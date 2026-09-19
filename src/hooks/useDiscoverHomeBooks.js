@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { TEMPORARY_DISCOVER_PREFERENCES } from '../constants/discoverPreferences'
 import { getBooksBySubject } from '../services/booksApi'
 import { getTrendingBooksDetails } from '../services/trendingBooksApi'
 import {
@@ -12,8 +13,27 @@ import {
 } from '../utils/recommendationSessionStorage'
 
 const HOME_SHELF_BOOK_LIMIT = 5
-const HOME_CANDIDATE_POOL_SIZE = 12
+const HOME_GOOGLE_CANDIDATE_POOL_SIZE = 40
+const HOME_TRENDING_CANDIDATE_POOL_SIZE = 100
 const EMPTY_EXCLUDED_BOOK_IDS = []
+
+/**
+ * Keeps the home preview tied to the same temporary preference source as the
+ * extended personalized view, so Firebase preferences can replace the constant
+ * without changing the selection flow.
+ */
+const HOME_PERSONALIZED_SUBJECT =
+  TEMPORARY_DISCOVER_PREFERENCES.find(
+    ({ subject }) => subject === 'mystery'
+  )?.subject || TEMPORARY_DISCOVER_PREFERENCES[0].subject
+
+function createSeenIdentitySetFromBooks(books) {
+  const seenIdentityKeys = new Set()
+
+  addBooksToIdentitySet(seenIdentityKeys, books)
+
+  return seenIdentityKeys
+}
 
 /**
  * Charge les selections de la vue Decouvrir par defaut.
@@ -46,15 +66,36 @@ function useDiscoverHomeBooks(
     useState('')
   const [mustReadStartIndex, setMustReadStartIndex] =
     useState(0)
+  const forYouStartIndexRef = useRef(0)
+  const forYouShownIdentityKeysRef = useRef(new Set())
   const trendingShownIdentityKeysRef = useRef(new Set())
+  const trendingCandidatePoolRef = useRef([])
+  const isTrendingPoolExhaustedRef = useRef(false)
   const mustReadShownIdentityKeysRef = useRef(new Set())
+
+  function writeTrendingState({
+    books = trendingBooks,
+    candidatePool = trendingCandidatePoolRef.current,
+    seenIdentityKeys = trendingShownIdentityKeysRef.current,
+    isPoolExhausted = isTrendingPoolExhaustedRef.current,
+  }) {
+    writeRecommendationState(RECOMMENDATION_STORAGE_KEYS.trending, {
+      books,
+      seenIdentityKeys,
+      candidatePool,
+      isPoolExhausted,
+    })
+  }
 
   useEffect(() => {
     if (isSearchMode) return
 
     let isActive = true
 
-    async function loadDiscoverBooks() {
+    function loadDiscoverBooks() {
+      const savedForYouState = readRecommendationState(
+        RECOMMENDATION_STORAGE_KEYS.homeForYou
+      )
       const savedTrendingState = readRecommendationState(
         RECOMMENDATION_STORAGE_KEYS.trending
       )
@@ -66,17 +107,39 @@ function useDiscoverHomeBooks(
       setDiscoverError('')
       setTrendingRefreshError('')
       setMustReadRefreshError('')
+      forYouShownIdentityKeysRef.current = new Set(
+        savedForYouState?.seenIdentityKeys || []
+      )
       trendingShownIdentityKeysRef.current = new Set(
         savedTrendingState?.seenIdentityKeys || []
+      )
+      trendingCandidatePoolRef.current =
+        savedTrendingState?.candidatePool || []
+      isTrendingPoolExhaustedRef.current = Boolean(
+        savedTrendingState?.isPoolExhausted
       )
       mustReadShownIdentityKeysRef.current = new Set(
         savedMustReadState?.seenIdentityKeys || []
       )
 
+      if (savedForYouState) {
+        addBooksToIdentitySet(
+          forYouShownIdentityKeysRef.current,
+          savedForYouState.books
+        )
+        forYouStartIndexRef.current = savedForYouState.startIndex
+        setForYouBooks(savedForYouState.books)
+      }
+
       if (savedTrendingState) {
         addBooksToIdentitySet(
           trendingShownIdentityKeysRef.current,
           savedTrendingState.books
+        )
+        trendingCandidatePoolRef.current =
+          savedTrendingState.candidatePool || []
+        isTrendingPoolExhaustedRef.current = Boolean(
+          savedTrendingState.isPoolExhausted
         )
         setTrendingBooks(savedTrendingState.books)
       }
@@ -90,23 +153,43 @@ function useDiscoverHomeBooks(
         setMustReadStartIndex(savedMustReadState.startIndex)
       }
 
-      if (savedTrendingState || savedMustReadState) {
+      if (
+        savedForYouState ||
+        savedTrendingState ||
+        savedMustReadState
+      ) {
         setIsDiscoverLoading(false)
       }
 
-      const results = await Promise.allSettled([
-        getBooksBySubject('mystery', HOME_SHELF_BOOK_LIMIT),
+      if (
+        savedForYouState &&
+        savedTrendingState &&
+        savedMustReadState
+      ) {
+        return
+      }
+
+      Promise.allSettled([
+        savedForYouState
+          ? Promise.resolve(savedForYouState.books)
+          : getBooksBySubject(
+              HOME_PERSONALIZED_SUBJECT,
+              HOME_GOOGLE_CANDIDATE_POOL_SIZE,
+              0
+            ),
         savedTrendingState
           ? Promise.resolve(savedTrendingState.books)
-          : getTrendingBooksDetails(HOME_CANDIDATE_POOL_SIZE),
+          : getTrendingBooksDetails(
+              HOME_TRENDING_CANDIDATE_POOL_SIZE
+            ),
         savedMustReadState
           ? Promise.resolve(savedMustReadState.books)
           : getBooksBySubject(
               'classics',
-              HOME_CANDIDATE_POOL_SIZE,
+              HOME_GOOGLE_CANDIDATE_POOL_SIZE,
               0
             ),
-      ])
+      ]).then((results) => {
 
       if (!isActive) return
 
@@ -117,8 +200,38 @@ function useDiscoverHomeBooks(
       ] = results
 
       // Peut-être pour toi
-      if (forYouResult.status === 'fulfilled') {
-        setForYouBooks(forYouResult.value)
+      if (savedForYouState) {
+        forYouStartIndexRef.current = savedForYouState.startIndex
+        setForYouBooks(savedForYouState.books)
+      } else if (forYouResult.status === 'fulfilled') {
+        const selectedForYouBooks = selectRecommendationBooks(
+          forYouResult.value,
+          {
+            limit: HOME_SHELF_BOOK_LIMIT,
+            alreadyShownIdentityKeys:
+              forYouShownIdentityKeysRef.current,
+            excludedBookIds,
+            preferBooksWithCovers: true,
+          }
+        )
+
+        addBooksToIdentitySet(
+          forYouShownIdentityKeysRef.current,
+          selectedForYouBooks
+        )
+        forYouStartIndexRef.current =
+          HOME_GOOGLE_CANDIDATE_POOL_SIZE
+        setForYouBooks(selectedForYouBooks)
+        if (selectedForYouBooks.length) {
+          writeRecommendationState(
+            RECOMMENDATION_STORAGE_KEYS.homeForYou,
+            {
+              books: selectedForYouBooks,
+              startIndex: forYouStartIndexRef.current,
+              seenIdentityKeys: forYouShownIdentityKeysRef.current,
+            }
+          )
+        }
       } else {
         setForYouBooks([])
       }
@@ -127,14 +240,16 @@ function useDiscoverHomeBooks(
       if (savedTrendingState) {
         setTrendingBooks(savedTrendingState.books)
       } else if (trendingResult.status === 'fulfilled') {
+        trendingCandidatePoolRef.current = trendingResult.value
+        isTrendingPoolExhaustedRef.current = false
         const selectedTrendingBooks = selectRecommendationBooks(
-          trendingResult.value,
+          trendingCandidatePoolRef.current,
           {
             limit: HOME_SHELF_BOOK_LIMIT,
             alreadyShownIdentityKeys:
               trendingShownIdentityKeysRef.current,
             excludedBookIds,
-            recycleSeenWhenExhausted: true,
+            preferBooksWithCovers: true,
           }
         )
 
@@ -144,14 +259,7 @@ function useDiscoverHomeBooks(
         )
         setTrendingBooks(selectedTrendingBooks)
         if (selectedTrendingBooks.length) {
-          writeRecommendationState(
-            RECOMMENDATION_STORAGE_KEYS.trending,
-            {
-              books: selectedTrendingBooks,
-              seenIdentityKeys:
-                trendingShownIdentityKeysRef.current,
-            }
-          )
+          writeTrendingState({ books: selectedTrendingBooks })
         }
       } else {
         setTrendingBooks([])
@@ -169,6 +277,7 @@ function useDiscoverHomeBooks(
             alreadyShownIdentityKeys:
               mustReadShownIdentityKeysRef.current,
             excludedBookIds,
+            preferBooksWithCovers: true,
           }
         )
 
@@ -177,13 +286,13 @@ function useDiscoverHomeBooks(
           selectedMustReadBooks
         )
         setMustReadBooks(selectedMustReadBooks)
-        setMustReadStartIndex(0)
+        setMustReadStartIndex(HOME_GOOGLE_CANDIDATE_POOL_SIZE)
         if (selectedMustReadBooks.length) {
           writeRecommendationState(
             RECOMMENDATION_STORAGE_KEYS.mustReads,
             {
               books: selectedMustReadBooks,
-              startIndex: 0,
+              startIndex: HOME_GOOGLE_CANDIDATE_POOL_SIZE,
               seenIdentityKeys:
                 mustReadShownIdentityKeysRef.current,
             }
@@ -204,6 +313,7 @@ function useDiscoverHomeBooks(
       }
 
       setIsDiscoverLoading(false)
+      })
     }
 
     loadDiscoverBooks()
@@ -220,35 +330,50 @@ function useDiscoverHomeBooks(
     setTrendingRefreshError('')
 
     try {
-      const books = await getTrendingBooksDetails(
-        HOME_CANDIDATE_POOL_SIZE
-      )
-      const selectedBooks = selectRecommendationBooks(books, {
+      let candidatePool = trendingCandidatePoolRef.current
+      let shownIdentityKeys = trendingShownIdentityKeysRef.current
+
+      if (!candidatePool.length || isTrendingPoolExhaustedRef.current) {
+        candidatePool = await getTrendingBooksDetails(
+          HOME_TRENDING_CANDIDATE_POOL_SIZE
+        )
+        trendingCandidatePoolRef.current = candidatePool
+        isTrendingPoolExhaustedRef.current = false
+
+        shownIdentityKeys =
+          createSeenIdentitySetFromBooks(trendingBooks)
+        trendingShownIdentityKeysRef.current = shownIdentityKeys
+      }
+
+      const selectedBooks = selectRecommendationBooks(candidatePool, {
         limit: HOME_SHELF_BOOK_LIMIT,
-        alreadyShownIdentityKeys:
-          trendingShownIdentityKeysRef.current,
+        alreadyShownIdentityKeys: shownIdentityKeys,
         excludedBookIds,
-        recycleSeenWhenExhausted: true,
+        preferBooksWithCovers: true,
       })
 
       if (selectedBooks.length) {
-        addBooksToIdentitySet(
-          trendingShownIdentityKeysRef.current,
-          selectedBooks
-        )
+        addBooksToIdentitySet(shownIdentityKeys, selectedBooks)
+        trendingShownIdentityKeysRef.current = shownIdentityKeys
         setTrendingBooks(selectedBooks)
         setTrendingRefreshError('')
-        writeRecommendationState(
-          RECOMMENDATION_STORAGE_KEYS.trending,
-          {
-            books: selectedBooks,
-            seenIdentityKeys: trendingShownIdentityKeysRef.current,
-          }
-        )
+        writeTrendingState({
+          books: selectedBooks,
+          candidatePool,
+          seenIdentityKeys: shownIdentityKeys,
+          isPoolExhausted: false,
+        })
       } else {
+        isTrendingPoolExhaustedRef.current = true
         setTrendingRefreshError(
           'Aucune nouvelle tendance disponible pour le moment.'
         )
+        writeTrendingState({
+          books: trendingBooks,
+          candidatePool,
+          seenIdentityKeys: shownIdentityKeys,
+          isPoolExhausted: true,
+        })
       }
     } catch {
       setTrendingRefreshError(
@@ -262,8 +387,9 @@ function useDiscoverHomeBooks(
   async function refreshMustReadBooks() {
     if (isMustReadRefreshing) return
 
+    const requestedStartIndex = mustReadStartIndex
     const nextStartIndex =
-      mustReadStartIndex + HOME_CANDIDATE_POOL_SIZE
+      requestedStartIndex + HOME_GOOGLE_CANDIDATE_POOL_SIZE
 
     setIsMustReadRefreshing(true)
     setMustReadRefreshError('')
@@ -271,15 +397,18 @@ function useDiscoverHomeBooks(
     try {
       const books = await getBooksBySubject(
         'classics',
-        HOME_CANDIDATE_POOL_SIZE,
-        nextStartIndex
+        HOME_GOOGLE_CANDIDATE_POOL_SIZE,
+        requestedStartIndex
       )
       const selectedBooks = selectRecommendationBooks(books, {
         limit: HOME_SHELF_BOOK_LIMIT,
         alreadyShownIdentityKeys:
           mustReadShownIdentityKeysRef.current,
         excludedBookIds,
+        preferBooksWithCovers: true,
       })
+      const shouldAdvanceStartIndex = books.length > 0
+      const shouldResetCycle = books.length === 0
 
       if (selectedBooks.length) {
         addBooksToIdentitySet(
@@ -297,11 +426,29 @@ function useDiscoverHomeBooks(
             seenIdentityKeys: mustReadShownIdentityKeysRef.current,
           }
         )
+      } else if (shouldResetCycle) {
+        const resetSeenIdentityKeys =
+          createSeenIdentitySetFromBooks(mustReadBooks)
+
+        mustReadShownIdentityKeysRef.current =
+          resetSeenIdentityKeys
+        setMustReadStartIndex(0)
+        setMustReadRefreshError(
+          'Aucun nouvel incontournable disponible pour le moment.'
+        )
+        writeRecommendationState(
+          RECOMMENDATION_STORAGE_KEYS.mustReads,
+          {
+            books: mustReadBooks,
+            startIndex: 0,
+            seenIdentityKeys: resetSeenIdentityKeys,
+          }
+        )
       } else {
         setMustReadRefreshError(
           'Aucun nouvel incontournable disponible pour le moment.'
         )
-        if (books.length) {
+        if (shouldAdvanceStartIndex) {
           setMustReadStartIndex(nextStartIndex)
           writeRecommendationState(
             RECOMMENDATION_STORAGE_KEYS.mustReads,

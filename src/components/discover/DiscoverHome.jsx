@@ -39,6 +39,7 @@ function DiscoverHome({
           <DiscoverShelf
             title="Tendances du moment"
             description="Les livres qui attirent l'attention en ce moment."
+            info="Selon l’activité récente de la communauté Open Library."
             books={trendingBooks}
             error={trendingRefreshError}
             isRefreshing={isTrendingRefreshing}

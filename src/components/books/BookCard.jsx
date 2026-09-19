@@ -1,5 +1,22 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import StatusBadge from '../ui/StatusBadge'
+
+function isGooglePlaceholderCover(coverUrl) {
+  if (!coverUrl) return false
+
+  try {
+    const urlText = new URL(coverUrl).toString().toLowerCase()
+
+    return (
+      urlText.includes('/googlebooks/images/no_cover') ||
+      urlText.includes('no_cover_thumb') ||
+      urlText.includes('image_not_available')
+    )
+  } catch {
+    return false
+  }
+}
 
 function BookCard({
   bookId,
@@ -7,13 +24,23 @@ function BookCard({
   author,
   cover,
   status,
+  coverLoading = 'eager',
 }) {
+  const [failedCover, setFailedCover] = useState(null)
+  const shouldShowCover =
+    Boolean(cover) &&
+    failedCover !== cover &&
+    !isGooglePlaceholderCover(cover)
+
   const coverContent = (
     <div className="aspect-2/3 overflow-hidden rounded-xl bg-cream">
-      {cover ? (
+      {shouldShowCover ? (
         <img
           src={cover}
           alt={`Couverture de ${title}`}
+          loading={coverLoading}
+          decoding="async"
+          onError={() => setFailedCover(cover)}
           className="
             h-full w-full object-cover
             transition-transform duration-200

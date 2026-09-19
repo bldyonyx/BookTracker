@@ -2,6 +2,57 @@ import { fetchJsonOnce } from '../utils/inFlightRequest'
 
 const BASE_URL = 'https://www.googleapis.com/books/v1/volumes'
 const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY
+function isGoogleBooksImageHost(hostname) {
+  return (
+    hostname === 'books.googleusercontent.com' ||
+    /^books\.google\./.test(hostname) ||
+    /^www\.google\./.test(hostname) ||
+    /^google\./.test(hostname)
+  )
+}
+
+/**
+ * Keeps Google Books cover URLs as close as possible to the API response.
+ *
+ * Google Books `zoom` and size parameters can change both image dimensions and
+ * crop behavior, so this helper only upgrades known Google image URLs to HTTPS
+ * and rejects Google's generic no-cover asset when it is visible in the URL.
+ *
+ * @param {string|null} coverUrl - Cover URL returned by Google Books.
+ * @returns {string|null} Original, HTTPS-normalized, or null cover URL.
+ */
+function normalizeGoogleBooksCoverUrl(coverUrl) {
+  if (!coverUrl) {
+    return coverUrl
+  }
+
+  try {
+    const url = new URL(coverUrl)
+    const hostname = url.hostname.toLowerCase()
+
+    if (!isGoogleBooksImageHost(hostname)) {
+      return coverUrl
+    }
+
+    const urlText = url.toString().toLowerCase()
+
+    if (
+      urlText.includes('/googlebooks/images/no_cover') ||
+      urlText.includes('no_cover_thumb') ||
+      urlText.includes('image_not_available')
+    ) {
+      return null
+    }
+
+    if (url.protocol === 'http:') {
+      url.protocol = 'https:'
+    }
+
+    return url.toString()
+  } catch {
+    return coverUrl
+  }
+}
 
 /**
  * Formate un livre recu depuis l'API Google Books
@@ -25,14 +76,15 @@ function formatBook(item) {
     isbn: isbns[0] || null,
     isbns,
 
-    cover:
+    cover: normalizeGoogleBooksCoverUrl(
       volumeInfo.imageLinks?.extraLarge ||
-      volumeInfo.imageLinks?.large ||
-      volumeInfo.imageLinks?.medium ||
-      volumeInfo.imageLinks?.small ||
-      volumeInfo.imageLinks?.thumbnail ||
-      volumeInfo.imageLinks?.smallThumbnail ||
-      null,
+        volumeInfo.imageLinks?.large ||
+        volumeInfo.imageLinks?.medium ||
+        volumeInfo.imageLinks?.small ||
+        volumeInfo.imageLinks?.thumbnail ||
+        volumeInfo.imageLinks?.smallThumbnail ||
+        null
+    ),
 
     description: volumeInfo.description || '',
     categories: volumeInfo.categories || [],

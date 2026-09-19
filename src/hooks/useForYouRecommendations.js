@@ -12,7 +12,7 @@ import {
 } from '../utils/recommendationSessionStorage'
 
 const RECOMMENDATIONS_PER_GENRE = 5
-const CANDIDATE_POOL_SIZE = 12
+const CANDIDATE_POOL_SIZE = 40
 const EMPTY_EXCLUDED_BOOK_IDS = []
 
 function createInitialGenreState() {
@@ -28,6 +28,14 @@ function createInitialGenreState() {
     }),
     {}
   )
+}
+
+function createSeenIdentitySetFromBooks(books) {
+  const seenIdentityKeys = new Set()
+
+  addBooksToIdentitySet(seenIdentityKeys, books)
+
+  return seenIdentityKeys
 }
 
 /**
@@ -146,6 +154,7 @@ function useForYouRecommendations(
                   limit: RECOMMENDATIONS_PER_GENRE,
                   alreadyShownIdentityKeys: shownIdentityKeys,
                   excludedBookIds,
+                  preferBooksWithCovers: true,
                 })
               : []
 
@@ -158,7 +167,7 @@ function useForYouRecommendations(
               RECOMMENDATION_STORAGE_KEYS.forYouGenre(subject),
               {
                 books,
-                startIndex: 0,
+                startIndex: CANDIDATE_POOL_SIZE,
                 seenIdentityKeys: shownIdentityKeys,
               }
             )
@@ -171,7 +180,11 @@ function useForYouRecommendations(
                 ? 'Cette selection est temporairement indisponible.'
                 : '',
             isLoading: false,
-            startIndex: 0,
+            startIndex:
+              result.status === 'fulfilled' &&
+              result.value.length > 0
+                ? CANDIDATE_POOL_SIZE
+                : 0,
           }
         })
 
@@ -191,8 +204,8 @@ function useForYouRecommendations(
 
     if (!currentGenre || currentGenre.isLoading) return
 
-    const nextStartIndex =
-      currentGenre.startIndex + CANDIDATE_POOL_SIZE
+    const requestedStartIndex = currentGenre.startIndex
+    const nextStartIndex = requestedStartIndex + CANDIDATE_POOL_SIZE
 
     setGenreState((currentState) => ({
       ...currentState,
@@ -207,7 +220,7 @@ function useForYouRecommendations(
       const books = await getBooksBySubject(
         subject,
         CANDIDATE_POOL_SIZE,
-        nextStartIndex
+        requestedStartIndex
       )
       const shownIdentityKeys =
         shownIdentityKeysByGenreRef.current[subject] ||
@@ -216,7 +229,37 @@ function useForYouRecommendations(
         limit: RECOMMENDATIONS_PER_GENRE,
         alreadyShownIdentityKeys: shownIdentityKeys,
         excludedBookIds,
+        preferBooksWithCovers: true,
       })
+      const shouldAdvanceStartIndex = books.length > 0
+      const shouldResetCycle = books.length === 0
+
+      if (shouldResetCycle) {
+        const resetSeenIdentityKeys =
+          createSeenIdentitySetFromBooks(currentGenre.books)
+
+        shownIdentityKeysByGenreRef.current[subject] =
+          resetSeenIdentityKeys
+        setGenreState((currentState) => ({
+          ...currentState,
+          [subject]: {
+            ...currentState[subject],
+            error:
+              'Aucune nouvelle suggestion disponible pour ce genre.',
+            isLoading: false,
+            startIndex: 0,
+          },
+        }))
+        writeRecommendationState(
+          RECOMMENDATION_STORAGE_KEYS.forYouGenre(subject),
+          {
+            books: currentGenre.books,
+            startIndex: 0,
+            seenIdentityKeys: resetSeenIdentityKeys,
+          }
+        )
+        return
+      }
 
       setGenreState((currentState) => ({
         ...currentState,
@@ -228,7 +271,7 @@ function useForYouRecommendations(
             ? ''
             : 'Aucune nouvelle suggestion disponible pour ce genre.',
           isLoading: false,
-          startIndex: selectedBooks.length || books.length
+          startIndex: selectedBooks.length || shouldAdvanceStartIndex
             ? nextStartIndex
             : currentState[subject].startIndex,
         },
@@ -246,7 +289,7 @@ function useForYouRecommendations(
             seenIdentityKeys: shownIdentityKeys,
           }
         )
-      } else if (books.length) {
+      } else if (shouldAdvanceStartIndex) {
         writeRecommendationState(
           RECOMMENDATION_STORAGE_KEYS.forYouGenre(subject),
           {

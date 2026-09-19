@@ -1,6 +1,7 @@
 const STORAGE_PREFIX = 'booktracker:recommendations'
 
 export const RECOMMENDATION_STORAGE_KEYS = {
+  homeForYou: `${STORAGE_PREFIX}:discover:home-for-you`,
   trending: `${STORAGE_PREFIX}:discover:trending`,
   mustReads: `${STORAGE_PREFIX}:discover:must-reads`,
   forYouGenre: (subject) => `${STORAGE_PREFIX}:for-you:${subject}`,
@@ -22,6 +23,10 @@ function isValidRecommendationState(value) {
     typeof value === 'object' &&
     Array.isArray(value.books) &&
     Array.isArray(value.seenIdentityKeys) &&
+    (Array.isArray(value.candidatePool) ||
+      value.candidatePool === undefined) &&
+    (typeof value.isPoolExhausted === 'boolean' ||
+      value.isPoolExhausted === undefined) &&
     (typeof value.startIndex === 'number' ||
       value.startIndex === undefined)
   )
@@ -49,6 +54,8 @@ export function readRecommendationState(key) {
       books: parsedValue.books,
       startIndex: parsedValue.startIndex || 0,
       seenIdentityKeys: parsedValue.seenIdentityKeys,
+      candidatePool: parsedValue.candidatePool || [],
+      isPoolExhausted: Boolean(parsedValue.isPoolExhausted),
     }
   } catch {
     return null
@@ -64,10 +71,18 @@ export function readRecommendationState(key) {
  * @param {Array<Object>} state.books - Currently displayed books.
  * @param {number} [state.startIndex=0] - Current pagination cursor.
  * @param {Iterable<string>} state.seenIdentityKeys - Session seen identities.
+ * @param {Array<Object>} [state.candidatePool] - Stored candidates for locally rotated shelves.
+ * @param {boolean} [state.isPoolExhausted=false] - Whether a stored local pool has no unseen books left.
  */
 export function writeRecommendationState(
   key,
-  { books, startIndex = 0, seenIdentityKeys }
+  {
+    books,
+    startIndex = 0,
+    seenIdentityKeys,
+    candidatePool,
+    isPoolExhausted = false,
+  }
 ) {
   const storage = getSessionStorage()
 
@@ -80,6 +95,8 @@ export function writeRecommendationState(
         books,
         startIndex,
         seenIdentityKeys: Array.from(seenIdentityKeys || []),
+        candidatePool,
+        isPoolExhausted,
       })
     )
   } catch {

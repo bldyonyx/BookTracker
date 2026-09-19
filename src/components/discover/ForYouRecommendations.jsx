@@ -36,11 +36,14 @@ function ForYouRecommendations() {
       </header>
 
       <div className="space-y-7 md:space-y-8">
-        {preferences.map(({ label, subject }) => {
+        {preferences.map(({ label, subject }, sectionIndex) => {
           const currentGenre = genreState[subject]
           const books = currentGenre?.books || []
           const isLoading = Boolean(currentGenre?.isLoading)
           const error = currentGenre?.error || ''
+          const refreshIconClass = `inline-block origin-center leading-none ${
+            isLoading ? 'animate-spin' : ''
+          }`
 
           return (
             <section
@@ -81,11 +84,7 @@ function ForYouRecommendations() {
                   "
                 >
                   <span
-                    className={
-                      isLoading
-                        ? 'inline-block animate-spin'
-                        : 'inline-block'
-                    }
+                    className={refreshIconClass}
                     aria-hidden="true"
                   >
                     ↻
@@ -125,6 +124,9 @@ function ForYouRecommendations() {
                       title={book.title}
                       author={book.authors.join(', ')}
                       cover={book.cover}
+                      coverLoading={
+                        sectionIndex === 0 ? 'eager' : 'lazy'
+                      }
                     />
                   </div>
                 ))}

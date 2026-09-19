@@ -7,9 +7,11 @@ const OPEN_LIBRARY_COVERS_URL = 'https://covers.openlibrary.org/b/id'
  * Recupere les livres actuellement tendance sur Open Library.
  *
  * Open Library fournit ici directement les informations necessaires
- * a l'affichage du rayon "Tendances du moment", y compris les couvertures.
+ * a l'affichage du rayon "Tendances du moment". La selection finale
+ * privilegie les couvertures cote recommandations sans supprimer les livres
+ * sans couverture du formatage API.
  *
- * @param {number} [limit=10] - Nombre maximum de livres a retourner.
+ * @param {number} [limit=10] - Nombre maximum de livres tendance a retourner.
  * @returns {Promise<Array>} Livres tendance formates pour Dear Pages.
  * @throws {Error} Si la requete Open Library echoue.
  */
@@ -17,7 +19,7 @@ export async function getTrendingBooksDetails(limit = 10) {
   const params = new URLSearchParams({
     q: 'trending_z_score:{0 TO *]',
     sort: 'trending',
-    limit: String(limit * 3),
+    limit: String(limit),
     fields: 'key,title,author_name,isbn,cover_i',
   })
 
@@ -32,8 +34,6 @@ export async function getTrendingBooksDetails(limit = 10) {
   }
 
   return (data.docs || [])
-    .filter((book) => book.cover_i)
-    .slice(0, limit)
     .map((book) => ({
       id: book.key.replace('/works/', ''),
       openLibraryId: book.key,
@@ -41,6 +41,8 @@ export async function getTrendingBooksDetails(limit = 10) {
       authors: book.author_name || ['Auteur inconnu'],
       isbn: book.isbn?.[0] || null,
       isbns: book.isbn || [],
-      cover: `${OPEN_LIBRARY_COVERS_URL}/${book.cover_i}-L.jpg?default=false`,
+      cover: book.cover_i
+        ? `${OPEN_LIBRARY_COVERS_URL}/${book.cover_i}-L.jpg?default=false`
+        : null,
     }))
 }

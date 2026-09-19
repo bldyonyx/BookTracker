@@ -108,6 +108,27 @@ function shuffleBooks(books) {
   return shuffledBooks
 }
 
+function hasCover(book) {
+  return Boolean(book.cover)
+}
+
+function selectBooksWithCoverPreference(books, limit) {
+  const booksWithCovers = books.filter(hasCover)
+  const booksWithoutCovers = books.filter((book) => !hasCover(book))
+
+  if (booksWithCovers.length >= limit) {
+    return shuffleBooks(booksWithCovers).slice(0, limit)
+  }
+
+  return [
+    ...shuffleBooks(booksWithCovers),
+    ...shuffleBooks(booksWithoutCovers).slice(
+      0,
+      limit - booksWithCovers.length
+    ),
+  ]
+}
+
 /**
  * Selects a compact recommendation shelf from a larger freshly fetched pool.
  * The function deduplicates editions, removes session-seen books, removes
@@ -120,6 +141,7 @@ function shuffleBooks(books) {
  * @param {number} options.limit - Maximum number of books to show.
  * @param {Set<string>} [options.alreadyShownIdentityKeys] - Session history.
  * @param {Iterable<string|Object>} [options.excludedBookIds] - Future library exclusions.
+ * @param {boolean} [options.preferBooksWithCovers=false] - Whether cover-bearing books should be selected before coverless fallbacks.
  * @param {boolean} [options.recycleSeenWhenExhausted=false] - Whether a fixed candidate space may reuse seen books when no unseen candidates remain.
  * @returns {Array<Object>} Deduped, filtered, randomly sampled books.
  */
@@ -129,6 +151,7 @@ export function selectRecommendationBooks(
     limit,
     alreadyShownIdentityKeys = new Set(),
     excludedBookIds = [],
+    preferBooksWithCovers = false,
     recycleSeenWhenExhausted = false,
   }
 ) {
@@ -144,6 +167,13 @@ export function selectRecommendationBooks(
   )
 
   if (eligibleUnseenBooks.length) {
+    if (preferBooksWithCovers) {
+      return selectBooksWithCoverPreference(
+        eligibleUnseenBooks,
+        limit
+      )
+    }
+
     return shuffleBooks(eligibleUnseenBooks).slice(0, limit)
   }
 
@@ -154,6 +184,10 @@ export function selectRecommendationBooks(
   const recyclableBooks = uniqueBooks.filter(
     (book) => !bookMatchesIdentitySet(book, excludedIdentitySet)
   )
+
+  if (preferBooksWithCovers) {
+    return selectBooksWithCoverPreference(recyclableBooks, limit)
+  }
 
   return shuffleBooks(recyclableBooks).slice(0, limit)
 }
