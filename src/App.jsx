@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 
+import ProtectedRoute from './components/auth/ProtectedRoute'
 import PageLayout from './components/layout/PageLayout'
 import BookPage from './pages/BookPage'
 import CollectionPage from './pages/CollectionPage'
@@ -15,21 +16,25 @@ import SignUp from './pages/SignUp'
 function App() {
   return (
     <Routes>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<PageLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/discover" element={<Discover />} />
+          <Route path="/library" element={<MyLibrary />} />
+          <Route path="/books/:id" element={<BookPage />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route
+            path="/collections/:id"
+            element={<CollectionPage />}
+          />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
 
-      <Route element={<PageLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/discover" element={<Discover />} />
-        <Route path="/library" element={<MyLibrary />} />
-        <Route path="/books/:id" element={<BookPage />} />
-        <Route path="/collections" element={<Collections />} />
-        <Route path="/collections/:id" element={<CollectionPage />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/onboarding" element={<Onboarding />} />
       </Route>
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/onboarding" element={<Onboarding />} />
-
     </Routes>
   )
 }
