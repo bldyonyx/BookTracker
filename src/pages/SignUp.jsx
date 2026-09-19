@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
+  Eye,
+  EyeOff,
+  LockKeyhole,
+  Mail,
+  UserRound,
+} from 'lucide-react'
+
+import AuthLayout from '../components/auth/AuthLayout.jsx'
+import GoogleIcon from '../components/auth/GoogleIcon.jsx'
+import {
   signInWithGoogle,
   signUpWithEmail,
 } from '../services/authService.js'
@@ -11,6 +21,7 @@ function SignUp() {
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
@@ -24,13 +35,15 @@ function SignUp() {
       await signUpWithEmail(
         email.trim(),
         password,
-        displayName.trim()
+        displayName.trim(),
       )
 
       navigate('/')
     } catch (firebaseError) {
       console.error(firebaseError)
-      setError("Impossible de créer ton compte pour le moment.")
+      setError(
+        'Impossible de créer ton compte pour le moment.',
+      )
     } finally {
       setIsLoading(false)
     }
@@ -45,70 +58,196 @@ function SignUp() {
       navigate('/')
     } catch (firebaseError) {
       console.error(firebaseError)
-      setError('Impossible de continuer avec Google pour le moment.')
+      setError(
+        'Impossible de continuer avec Google pour le moment.',
+      )
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="font-heading text-3xl font-bold text-darkwood">
-        Créer un compte
-      </h1>
-
+    <AuthLayout
+      title="Create your account ♡"
+      subtitle="A new chapter starts here."
+      footerText="Already have an account?"
+      footerLinkText="Log in"
+      footerLinkTo="/login"
+    >
       <form
         onSubmit={handleSubmit}
-        className="mt-8 flex max-w-sm flex-col gap-4"
+        className="flex flex-col gap-4"
       >
-        <input
-          type="text"
-          value={displayName}
-          onChange={(event) => setDisplayName(event.target.value)}
-          placeholder="Ton nom"
-          required
-        />
+        <label className="relative block">
+          <UserRound
+            size={20}
+            strokeWidth={1.7}
+            className="
+              pointer-events-none absolute left-4
+              top-1/2 -translate-y-1/2 text-walnut
+            "
+          />
 
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="E-mail"
-          required
-        />
+          <input
+            type="text"
+            value={displayName}
+            onChange={(event) =>
+              setDisplayName(event.target.value)
+            }
+            placeholder="Your name"
+            autoComplete="name"
+            required
+            className="
+              w-full rounded-2xl border
+              border-walnut/20 bg-white/35
+              py-4 pl-12 pr-4
+              text-sm text-ink outline-none
+              transition
+              placeholder:text-walnut/45
+              focus:border-olive/60
+              focus:ring-2 focus:ring-lime/40
+            "
+          />
+        </label>
 
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="Mot de passe"
-          minLength={6}
-          required
-        />
+        <label className="relative block">
+          <Mail
+            size={20}
+            strokeWidth={1.7}
+            className="
+              pointer-events-none absolute left-4
+              top-1/2 -translate-y-1/2 text-walnut
+            "
+          />
+
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Email address"
+            autoComplete="email"
+            required
+            className="
+              w-full rounded-2xl border
+              border-walnut/20 bg-white/35
+              py-4 pl-12 pr-4
+              text-sm text-ink outline-none
+              transition
+              placeholder:text-walnut/45
+              focus:border-olive/60
+              focus:ring-2 focus:ring-lime/40
+            "
+          />
+        </label>
+
+        <label className="relative block">
+          <LockKeyhole
+            size={20}
+            strokeWidth={1.7}
+            className="
+              pointer-events-none absolute left-4
+              top-1/2 -translate-y-1/2 text-walnut
+            "
+          />
+
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(event) =>
+              setPassword(event.target.value)
+            }
+            placeholder="Password"
+            autoComplete="new-password"
+            minLength={6}
+            required
+            className="
+              w-full rounded-2xl border
+              border-walnut/20 bg-white/35
+              py-4 pl-12 pr-12
+              text-sm text-ink outline-none
+              transition
+              placeholder:text-walnut/45
+              focus:border-olive/60
+              focus:ring-2 focus:ring-lime/40
+            "
+          />
+
+          <button
+            type="button"
+            onClick={() =>
+              setShowPassword((current) => !current)
+            }
+            aria-label={
+              showPassword
+                ? 'Hide password'
+                : 'Show password'
+            }
+            className="
+              absolute right-4 top-1/2
+              -translate-y-1/2 text-walnut
+              transition-opacity hover:opacity-60
+            "
+          >
+            {showPassword ? (
+              <EyeOff size={20} strokeWidth={1.7} />
+            ) : (
+              <Eye size={20} strokeWidth={1.7} />
+            )}
+          </button>
+        </label>
+
+        {error && (
+          <p className="text-sm text-red-700">
+            {error}
+          </p>
+        )}
 
         <button
           type="submit"
           disabled={isLoading}
+          className="
+            mt-2 w-full rounded-2xl
+            bg-lime px-5 py-4
+            font-bold text-darkwood
+            transition
+            hover:-translate-y-0.5 hover:brightness-95
+            disabled:cursor-not-allowed disabled:opacity-60
+          "
         >
-          {isLoading ? 'Création...' : 'Créer mon compte'}
+          {isLoading
+            ? 'Creating account...'
+            : 'Create account'}
         </button>
       </form>
+
+      <div className="my-6 flex items-center gap-4">
+        <div className="h-px flex-1 bg-walnut/20" />
+
+        <span className="font-heading text-lg text-walnut">
+          or
+        </span>
+
+        <div className="h-px flex-1 bg-walnut/20" />
+      </div>
 
       <button
         type="button"
         onClick={handleGoogleSignIn}
         disabled={isLoading}
-        className="mt-6"
+        className="
+          flex w-full items-center justify-center gap-3
+          rounded-2xl border border-walnut/20
+          bg-white/35 px-5 py-4
+          font-bold text-darkwood
+          transition
+          hover:bg-white/60
+          disabled:cursor-not-allowed disabled:opacity-60
+        "
       >
-        Continuer avec Google
+        <GoogleIcon />
+        Continue with Google
       </button>
-
-      {error && (
-        <p className="mt-4 font-ui text-sm text-red-700">
-          {error}
-        </p>
-      )}
-    </main>
+    </AuthLayout>
   )
 }
 
